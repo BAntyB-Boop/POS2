@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/mochi-pos.dc.html" }
+  ]
+}
