@@ -568,7 +568,7 @@ a{color:#87512d}a:hover{color:#7a4624}
          <input value="{{ sr.name }}" onInput="{{ sr.onName }}" style="flex:1;min-width:0;border:2px solid #d7c3b8;border-radius:14px;background:#fff;padding:9px 12px;font-size:14px;font-weight:700;color:#261811">
          <div style="display:flex;align-items:center;gap:6px">
           <span style="font-size:12px;font-weight:700;color:#84746b">PIN</span>
-          <input value="{{ sr.pin }}" onInput="{{ sr.onPin }}" style="width:76px;text-align:center;letter-spacing:3px;border:2px solid #d7c3b8;border-radius:14px;background:#fff;padding:9px 6px;font-size:14px;font-weight:700;color:#261811">
+          <input type="password" value="{{ sr.pin }}" onInput="{{ sr.onPin }}" style="width:76px;text-align:center;letter-spacing:3px;border:2px solid #d7c3b8;border-radius:14px;background:#fff;padding:9px 6px;font-size:14px;font-weight:700;color:#261811">
          </div>
          <sc-if value="{{ sr.isYou }}" hint-placeholder-val="{{ false }}">
           <span style="background:#beead3;color:#264e3d;font-size:11px;font-weight:700;border-radius:9999px;padding:5px 10px">You</span>
@@ -1004,8 +1004,10 @@ class Component extends DCLogic {
   if (!session) screen = 'login'; else if (screen === 'login') screen = 'sales';
   return Object.assign({}, base, this.volatiles(), { screen, session });
  }
- persist() { const S = this.state; try { localStorage.setItem('mochi-pos-v1', JSON.stringify({ v: 1, products: S.products, staff: S.staff, orders: S.orders, settings: S.settings, session: S.session, screen: S.screen, cart: S.cart, discountPct: S.discountPct, selStaffId: S.selStaffId, lastReceipt: S.lastReceipt })) } catch (e) { } }
+ persist() { const S = this.state; try { localStorage.setItem('mochi-pos-v1', JSON.stringify({ v: 1, products: S.products, staff: S.staff, orders: S.orders, settings: S.settings, screen: S.screen, cart: S.cart, discountPct: S.discountPct, selStaffId: S.selStaffId, lastReceipt: S.lastReceipt })) } catch (e) { } }
  up(p, cb) { this.setState(p, () => { this.persist(); cb && cb() }) }
+ persistSoon() { clearTimeout(this._pTimer); this._pTimer = setTimeout(() => this.persist(), 400) }
+ upSoon(p) { this.setState(p, () => this.persistSoon()) }
  toast(msg, icon) { const id = Math.random(); this.setState(s => ({ toasts: [...s.toasts, { id, msg, icon: icon || 'check_circle' }] })); setTimeout(() => this.setState(s => ({ toasts: s.toasts.filter(t => t.id !== id) })), 2600) }
  fmt(n) { return (this.state.settings.currency || '฿') + Number(n || 0).toLocaleString('en-US') }
  noStr(n) { return '#' + String(n).padStart(3, '0') }
@@ -1018,11 +1020,12 @@ class Component extends DCLogic {
  chQty(id, d) { const S = this.state, ci = S.cart.find(x => x.id === id); if (!ci) return; if (d > 0) { const p = S.products.find(x => x.id === id); if (p && ci.qty >= p.stock) { this.toast('Only ' + p.stock + ' in stock', 'warning'); return } } const q = ci.qty + d; this.up({ cart: q <= 0 ? S.cart.filter(x => x.id !== id) : S.cart.map(x => x.id === id ? { ...x, qty: q } : x) }) }
  hold() { const S = this.state; if (!S.cart.length) { this.toast('Cart is empty', 'info'); return } const c = this.calc(); this.up({ orders: [...S.orders, { no: this.nextNo(), ts: Date.now(), items: S.cart.map(x => ({ ...x })), subtotal: c.sub, discount: c.disc, discPct: S.discountPct, total: c.total, method: null, received: 0, change: 0, status: 'held', staff: S.session.name }], cart: [], discountPct: 0 }); this.toast('Order held — find it in Orders', 'pause_circle') }
  openPay() { const S = this.state; if (!S.cart.length) { this.toast('Add items to the cart first', 'info'); return } this.setState({ payOpen: true, pay: { method: 'cash', received: '', people: 2, processing: false } }) }
+ cancelPay() { if (this._payTimer) { clearTimeout(this._payTimer); this._payTimer = null } if (this.state.payOpen) this.setState({ payOpen: false, pay: { ...this.state.pay, processing: false } }) }
  padPay(k) { const S = this.state; let r = S.pay.received; if (k === 'back') r = r.slice(0, -1); else if (r.length < 7) r += k; r = r.replace(/^0+(?=\d)/, ''); this.setState({ pay: { ...S.pay, received: r } }) }
- completePay() { const S = this.state, c = this.calc(), m = S.pay.method; if (m === 'cash') { const r = parseInt(S.pay.received || '0', 10); if (r < c.total) { this.toast('Received amount is not enough', 'error'); return } } if (m === 'card') { if (S.pay.processing) return; this.setState({ pay: { ...S.pay, processing: true } }); setTimeout(() => this.finishPay(), 1400); return } this.finishPay() }
- finishPay() { const S = this.state, c = this.calc(), m = S.pay.method, rec = m === 'cash' ? parseInt(S.pay.received || '0', 10) : c.total; const order = { no: this.nextNo(), ts: Date.now(), items: S.cart.map(x => ({ ...x })), subtotal: c.sub, discount: c.disc, discPct: S.discountPct, total: c.total, method: m, received: rec, change: rec - c.total, status: 'completed', staff: S.session.name }; this.up({ orders: [...S.orders, order], products: S.products.map(p => { const ci = S.cart.find(x => x.id === p.id); return ci ? { ...p, stock: Math.max(0, p.stock - ci.qty) } : p }), cart: [], discountPct: 0, payOpen: false, pay: { method: 'cash', received: '', people: 2, processing: false }, lastReceipt: order, screen: 'success' }); if (S.settings.autoPrint) setTimeout(() => this.toast('Receipt sent to printer', 'print'), 700) }
+ completePay() { const S = this.state, c = this.calc(), m = S.pay.method; if (m === 'cash') { const r = parseInt(S.pay.received || '0', 10); if (r < c.total) { this.toast('Received amount is not enough', 'error'); return } } if (m === 'card') { if (S.pay.processing) return; this.setState({ pay: { ...S.pay, processing: true } }); this._payTimer = setTimeout(() => { this._payTimer = null; this.finishPay() }, 1400); return } this.finishPay() }
+ finishPay() { const S = this.state; if (!S.cart.length) { this.setState({ payOpen: false, pay: { ...S.pay, processing: false } }); return } const c = this.calc(), m = S.pay.method, rec = m === 'cash' ? parseInt(S.pay.received || '0', 10) : c.total; const order = { no: this.nextNo(), ts: Date.now(), items: S.cart.map(x => ({ ...x })), subtotal: c.sub, discount: c.disc, discPct: S.discountPct, total: c.total, method: m, received: rec, change: rec - c.total, status: 'completed', staff: S.session.name }; this.up({ orders: [...S.orders, order], products: S.products.map(p => { const ci = S.cart.find(x => x.id === p.id); return ci ? { ...p, stock: Math.max(0, p.stock - ci.qty) } : p }), cart: [], discountPct: 0, payOpen: false, pay: { method: 'cash', received: '', people: 2, processing: false }, lastReceipt: order, screen: 'success' }); if (S.settings.autoPrint) setTimeout(() => this.toast('Receipt sent to printer', 'print'), 700) }
  refund(no) { const S = this.state, o = S.orders.find(x => x.no === no); if (!o) return; this.up({ orders: S.orders.map(x => x.no === no ? { ...x, status: 'refunded' } : x), products: S.products.map(p => { const it = o.items.find(i => i.id === p.id); return it ? { ...p, stock: p.stock + it.qty } : p }), confirm: null }); this.toast('Order ' + this.noStr(no) + ' refunded', 'undo') }
- resume(no) { const S = this.state, o = S.orders.find(x => x.no === no); if (!o) return; this.up({ cart: o.items.map(x => ({ ...x })), discountPct: o.discPct || 0, orders: S.orders.filter(x => x.no !== no), screen: 'sales', confirm: null, selOrderNo: null }); this.toast('Order resumed — ready to charge', 'play_circle') }
+ resume(no) { const S = this.state, o = S.orders.find(x => x.no === no); if (!o) return; let trimmed = false; const cart = o.items.map(x => { const p = S.products.find(y => y.id === x.id), max = p ? p.stock : 0; if (x.qty > max) trimmed = true; return { ...x, qty: Math.min(x.qty, max) } }).filter(x => x.qty > 0); this.up({ cart, discountPct: o.discPct || 0, orders: S.orders.filter(x => x.no !== no), screen: 'sales', confirm: null, selOrderNo: null }); this.toast(trimmed ? 'Order resumed — some items reduced to match stock' : 'Order resumed — ready to charge', trimmed ? 'warning' : 'play_circle') }
  ask(c) { this.setState({ confirm: c, acctOpen: false }) }
  doConfirm() {
   const S = this.state, c = S.confirm; if (!c) return; const a = c.act;
@@ -1032,28 +1035,28 @@ class Component extends DCLogic {
   else if (a === 'delHeld') this.up({ orders: S.orders.filter(x => x.no !== c.no), confirm: null, selOrderNo: null }, () => this.toast('Held order deleted', 'delete'));
   else if (a === 'delProduct') this.up({ products: S.products.filter(p => p.id !== c.id), cart: S.cart.filter(x => x.id !== c.id), editing: null, confirm: null }, () => this.toast('Product deleted', 'delete'));
   else if (a === 'closeShift') this.up({ session: null, screen: 'login', confirm: null, cat: 'all', q: '' }, () => this.toast('Shift closed. See you tomorrow!', 'lock_clock'));
-  else if (a === 'reset') { try { localStorage.removeItem('mochi-pos-v1') } catch (e) { } const f = this.seed(); this.setState(Object.assign(f, this.volatiles()), () => this.persist()); this.toast('Demo data reset', 'restart_alt') }
+  else if (a === 'reset') { try { localStorage.removeItem('mochi-pos-v1') } catch (e) { } const f = this.seed(); const keep = S.session && f.staff.find(x => x.id === S.session.id) || null; this.setState(Object.assign(f, this.volatiles(), { session: keep, screen: keep ? 'sales' : 'login' }), () => this.persist()); this.toast('Demo data reset', 'restart_alt') }
  }
  openEdit(p) { this.setState({ editing: p ? { id: p.id, name: p.name, price: String(p.price), cat: p.cat, stock: p.stock, img: p.img } : { id: null, name: '', price: '', cat: 'Mochi', stock: 10, img: 'logo' } }) }
  edField(e) { const { name, value } = e.target; this.setState({ editing: { ...this.state.editing, [name]: name === 'price' ? value.replace(/[^\d]/g, '') : value } }) }
  saveEdit() { const S = this.state, ed = S.editing, price = Math.round(parseFloat(ed.price) || 0); if (!ed.name.trim() || price <= 0) { this.toast('Enter a name and a price', 'error'); return } if (ed.id) this.up({ products: S.products.map(p => p.id === ed.id ? { ...p, name: ed.name.trim(), price, cat: ed.cat, stock: ed.stock, img: ed.img } : p), editing: null }, () => this.toast('Product saved')); else this.up({ products: [...S.products, { id: 'p' + Date.now(), name: ed.name.trim(), price, cat: ed.cat, stock: ed.stock, img: ed.img, active: true }], editing: null }, () => this.toast('Product added')) }
  toggleActive(id) { this.up({ products: this.state.products.map(p => p.id === id ? { ...p, active: !p.active } : p) }) }
- onSetting(e) { const t = e.target, v = t.type === 'number' ? (parseFloat(t.value) || 0) : t.value; this.up({ settings: { ...this.state.settings, [t.name]: v } }) }
- hourField(i, k, e) { this.up({ settings: { ...this.state.settings, hours: this.state.settings.hours.map((x, j) => j === i ? { ...x, [k]: e.target.value } : x) } }) }
- staffField(i, k, e) { let v = e.target.value; if (k === 'pin') v = v.replace(/\D/g, '').slice(0, 4); const st = this.state.staff.map((x, j) => j === i ? { ...x, [k]: v } : x); const ses = this.state.session && st.find(x => x.id === this.state.session.id); this.up({ staff: st, session: ses || this.state.session }) }
+ onSetting(e) { const t = e.target, v = t.type === 'number' ? (parseFloat(t.value) || 0) : t.value; this.upSoon({ settings: { ...this.state.settings, [t.name]: v } }) }
+ hourField(i, k, e) { this.upSoon({ settings: { ...this.state.settings, hours: this.state.settings.hours.map((x, j) => j === i ? { ...x, [k]: e.target.value } : x) } }) }
+ staffField(i, k, e) { let v = e.target.value; if (k === 'pin') v = v.replace(/\D/g, '').slice(0, 4); const st = this.state.staff.map((x, j) => j === i ? { ...x, [k]: v } : x); const ses = this.state.session && st.find(x => x.id === this.state.session.id); this.upSoon({ staff: st, session: ses || this.state.session }) }
  removeStaff(id) { const S = this.state; if (S.session && S.session.id === id) { this.toast("You can't remove yourself", 'error'); return } this.up({ staff: S.staff.filter(x => x.id !== id) }, () => this.toast('Staff removed', 'delete')) }
  closeShiftAsk() { const S = this.state, t0 = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).getTime(); const done = S.orders.filter(o => o.status === 'completed' && o.ts >= t0); this.ask({ title: 'Close shift?', msg: 'Today: ' + done.length + ' orders · ' + this.fmt(done.reduce((a, o) => a + o.total, 0)) + '. ' + (S.session ? S.session.name : '') + ' will be signed out.', cta: 'Close Shift', color: '#87512d', act: 'closeShift' }) }
  componentDidMount() {
   this._kd = (e) => {
    const S = this.state;
    if (S.screen === 'login') { if (/^[0-9]$/.test(e.key)) this.tapPin(e.key); else if (e.key === 'Backspace') this.setState({ pin: S.pin.slice(0, -1) }); else if (e.key === 'Enter') { if (S.pin.length === 4) this.checkPin(); else this.shakePin() } return }
-   if (e.key === 'Escape') { this.setState({ payOpen: false, discOpen: false, confirm: null, editing: null, notifOpen: false, acctOpen: false }); return }
+   if (e.key === 'Escape') { this.cancelPay(); this.setState({ discOpen: false, confirm: null, editing: null, notifOpen: false, acctOpen: false }); return }
    if (S.payOpen && S.pay.method === 'cash' && !S.confirm) { if (/^[0-9]$/.test(e.key)) this.padPay(e.key); else if (e.key === 'Backspace') this.padPay('back'); else if (e.key === 'Enter') this.completePay() }
   };
   window.addEventListener('keydown', this._kd);
   if (!window.MOCHI_IMG) { const t = setInterval(() => { if (window.MOCHI_IMG) { clearInterval(t); this.forceUpdate() } }, 120); setTimeout(() => clearInterval(t), 6000) }
  }
- componentWillUnmount() { window.removeEventListener('keydown', this._kd) }
+ componentWillUnmount() { window.removeEventListener('keydown', this._kd); clearTimeout(this._payTimer); clearTimeout(this._pTimer) }
  renderVals() {
   const S = this.state, IM = k => ((window.MOCHI_IMG || {})[k] || ''), fmt = n => this.fmt(n), th = this.props.lowStockThreshold ?? 6;
   const c = this.calc(), scr = S.screen, isLogin = scr === 'login', isSuccess = scr === 'success', isApp = !isLogin && !isSuccess;
@@ -1066,9 +1069,10 @@ class Component extends DCLogic {
   const pinDots = [0, 1, 2, 3].map(i => ({ bg: i < S.pin.length ? '#87512d' : '#f8ddd1', sh: i < S.pin.length ? 'none' : 'inset 0 2px 4px rgba(58,42,34,.15)' }));
   const loginPad = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'C', '0', 'OK'].map(t => ({ t: t === 'C' ? 'Clear' : t, bg: t === 'C' ? '#f8ddd1' : t === 'OK' ? '#ffb88c' : '#fff8f6', color: t === 'C' ? '#52443c' : t === 'OK' ? '#7a4624' : '#87512d', fs: (t === 'C' || t === 'OK') ? '16px' : '28px', onTap: t === 'C' ? () => this.setState({ pin: '' }) : t === 'OK' ? () => { if (S.pin.length === 4) this.checkPin(); else this.shakePin() } : () => this.tapPin(t) }));
   const todayDone = S.orders.filter(o => o.status === 'completed' && o.ts >= t0);
-  const lowStock = S.products.filter(p => p.active && p.stock <= th);
+  const lowStock = S.products.filter(p => p.active && p.stock > 0 && p.stock <= th);
+  const outStock = S.products.filter(p => p.active && p.stock <= 0);
   const heldOrders = S.orders.filter(o => o.status === 'held');
-  const notifItems = [...lowStock.map(p => ({ icon: 'warning', color: '#ba1a1a', text: p.name + ' — only ' + p.stock + ' left' })), ...(heldOrders.length ? [{ icon: 'pause_circle', color: '#7a4624', text: heldOrders.length + ' held order' + (heldOrders.length > 1 ? 's' : '') + ' waiting' }] : [])];
+  const notifItems = [...outStock.map(p => ({ icon: 'block', color: '#93000a', text: p.name + ' — sold out' })), ...lowStock.map(p => ({ icon: 'warning', color: '#ba1a1a', text: p.name + ' — only ' + p.stock + ' left' })), ...(heldOrders.length ? [{ icon: 'pause_circle', color: '#7a4624', text: heldOrders.length + ' held order' + (heldOrders.length > 1 ? 's' : '') + ' waiting' }] : [])];
   const q = (S.q || '').toLowerCase().trim();
   const pill = a => ({ fill: a ? '1' : '0', bg: a ? '#ffb88c' : 'transparent', fg: a ? '#7a4624' : '#52443c', bd: a ? '#ffb88c' : '#d7c3b8', sh: a ? '0 4px 0 rgba(58,42,34,.1)' : 'none' });
   const cats = [{ id: 'all', label: 'All items', icon: 'apps' }, { id: 'Mochi', label: 'Mochi', icon: 'bakery_dining' }, { id: 'Cakes', label: 'Cakes', icon: 'cake' }, { id: 'Drinks', label: 'Drinks', icon: 'local_cafe' }, { id: 'Seasonal', label: 'Seasonal', icon: 'redeem' }].map(cd => ({ label: cd.label, icon: cd.icon, ...pill((S.cat || 'all') === cd.id), onPick: () => this.setState({ cat: cd.id }) }));
@@ -1098,7 +1102,8 @@ class Component extends DCLogic {
   const range = S.range, spanDays = range === 'today' ? 1 : range === 'week' ? 7 : 30;
   const start = range === 'today' ? t0 : t0 - (spanDays - 1) * dayMs, prevStart = start - spanDays * dayMs;
   const inR = S.orders.filter(o => o.status === 'completed' && o.ts >= start);
-  const prevR = S.orders.filter(o => o.status === 'completed' && o.ts >= prevStart && o.ts < start);
+  const prevCut = range === 'today' ? Date.now() - dayMs : start;
+  const prevR = S.orders.filter(o => o.status === 'completed' && o.ts >= prevStart && o.ts < prevCut);
   const sum = a => a.reduce((x, o) => x + o.total, 0);
   const sales = sum(inR), prevSales = sum(prevR);
   const itemsSold = inR.reduce((a, o) => a + o.items.reduce((b, x) => b + x.qty, 0), 0);
@@ -1110,7 +1115,7 @@ class Component extends DCLogic {
   const maxN = tops[0] ? tops[0].n : 1;
   const topProducts = tops.map((t, i) => { const p = S.products.find(x => x.id === t.id); return { img: p ? IM(p.img) : IM('logo'), name: t.name, soldLabel: t.n + ' sold', pct: Math.max(6, Math.round(t.n / maxN * 100)), op: String(Math.max(.35, 1 - i * .16)) } });
   let vals = [], labels = [];
-  if (range === 'today') { for (let h = 8; h <= 18; h++) { vals.push(sum(inR.filter(o => new Date(o.ts).getHours() === h))); labels.push(h % 2 === 0 ? (h < 12 ? h + 'am' : h === 12 ? '12pm' : (h - 12) + 'pm') : '') } }
+  if (range === 'today') { const hrs = inR.map(o => new Date(o.ts).getHours()); const h0 = Math.min(8, ...hrs), h1 = Math.max(20, ...hrs); for (let h = h0; h <= h1; h++) { vals.push(sum(inR.filter(o => new Date(o.ts).getHours() === h))); labels.push(h % 2 === 0 ? (h < 12 ? h + 'am' : h === 12 ? '12pm' : (h - 12) + 'pm') : '') } }
   else if (range === 'week') { for (let d = 6; d >= 0; d--) { const s0 = t0 - d * dayMs; vals.push(sum(inR.filter(o => o.ts >= s0 && o.ts < s0 + dayMs))); labels.push(new Date(s0).toLocaleDateString('en-US', { weekday: 'short' })) } }
   else { for (let d = 29; d >= 0; d--) { const s0 = t0 - d * dayMs; vals.push(sum(inR.filter(o => o.ts >= s0 && o.ts < s0 + dayMs))); labels.push(d % 5 === 0 ? String(new Date(s0).getDate()) : '') } }
   const maxV = Math.max(100, Math.ceil(Math.max(...vals, 1) / 100) * 100);
@@ -1133,7 +1138,7 @@ class Component extends DCLogic {
   const searchPh = scr === 'sales' ? 'Scan or search products…' : scr === 'inventory' ? 'Search inventory…' : 'Search order number…';
   return {
    isLogin, isApp, isSuccess, isSales: scr === 'sales', isOrders: scr === 'orders', isInventory: scr === 'inventory', isDashboard: scr === 'dashboard', isSettings: scr === 'settings',
-   imgBrand: IM('brand'), imgMascot: IM('mascot'), imgMascotSm: IM('mascotSm'), imgParty: IM('party'), imgWave: IM('wave'), imgLogo: IM('logo'),
+   imgBrand: IM('brand'), imgMascotSm: IM('mascotSm'), imgParty: IM('party'), imgWave: IM('wave'),
    staffList, selStaffName: selStaff.name, pinDots, pinAnim: S.pinShake ? 'shakeX .4s ease' : 'none', loginPad, showHint: this.props.showPinHint ?? true,
    showSearch: scr === 'sales' || scr === 'inventory' || scr === 'orders', searchIcon: scr === 'sales' ? 'barcode_scanner' : 'search', searchPh, q: S.q, onSearch: e => this.setState({ q: e.target.value }),
    todayCount: todayDone.length, notifOpen: S.notifOpen, toggleNotif: () => this.setState({ notifOpen: !S.notifOpen, acctOpen: false }), hasNotif: notifItems.length > 0, notifItems, notifEmpty: notifItems.length === 0,
@@ -1149,7 +1154,7 @@ class Component extends DCLogic {
    payProcessing: S.pay.processing, payNotProcessing: !S.pay.processing,
    people, onPeopleDec: () => this.setState({ pay: { ...S.pay, people: Math.max(2, people - 1) } }), onPeopleInc: () => this.setState({ pay: { ...S.pay, people: Math.min(6, people + 1) } }), eachStr: fmt(each), splitNote: first === each ? 'Everyone pays the same.' : 'First person pays ' + fmt(first) + ', the rest ' + fmt(each) + '.',
    payCta: pm === 'cash' ? 'Complete payment' : pm === 'qr' ? 'Confirm QR paid' : pm === 'card' ? (S.pay.processing ? 'Processing…' : 'Charge card') : 'Complete split', payCtaOp: (pm === 'cash' && short) || S.pay.processing ? '.55' : '1',
-   onCompletePay: () => this.completePay(), closePay: () => this.setState({ payOpen: false }),
+   onCompletePay: () => this.completePay(), closePay: () => this.cancelPay(),
    rcPaid: fmt(rc.received), rcHasChange: rc.method === 'cash' && rc.change > 0, rcChange: fmt(rc.change), rcHeader: S.settings.receiptHeader, rcMeta: 'Order ' + this.noStr(rc.no) + ' · ' + tstr(rc.ts) + ' · ' + rc.staff + ' · ' + (rc.method || '').toUpperCase(), rcItems: rc.items.map(x => ({ name: x.name + ' × ' + x.qty, lineStr: fmt(x.price * x.qty) })), rcHasDisc: rc.discount > 0, rcDisc: fmt(rc.discount), rcTotal: fmt(rc.total), rcFooter: S.settings.receiptFooter,
    onNewSale: () => this.up({ screen: 'sales' }), onPrint: () => this.toast('Receipt sent to printer', 'print'), onShare: () => this.toast('Receipt QR shown on customer display', 'qr_code_2'), confetti,
    orderTabs, ordersDateLabel: S.ordersToday ? 'Today' : 'All time', toggleOrdersDate: () => this.setState({ ordersToday: !S.ordersToday, selOrderNo: null }), ordersList, ordersEmpty: filtered.length === 0, ordersEmptyMsg: 'No ' + S.ordersTab + ' orders ' + (S.ordersToday ? 'today' : 'yet'),
