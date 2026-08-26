@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mochi &amp; Co. - Staff Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#93000a",
+                        "on-surface": "#261811",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#264e3d",
+                        "on-secondary-fixed": "#002115",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#feb78b",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#7a4624",
+                        "secondary-fixed-dim": "#a5d0ba",
+                        "surface-container-low": "#fff1eb",
+                        "tertiary-fixed-dim": "#ffb4a8",
+                        "on-primary-fixed": "#311300",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#436b58",
+                        "surface-dim": "#f0d5c8",
+                        "inverse-surface": "#3d2d25",
+                        "on-primary-fixed-variant": "#6b3a18",
+                        "secondary-container": "#beead3",
+                        "secondary": "#3e6654",
+                        "surface-bright": "#fff8f6",
+                        "surface-container": "#ffeae0",
+                        "surface-container-high": "#fee3d6",
+                        "outline-variant": "#d7c3b8",
+                        "surface-container-highest": "#f8ddd1",
+                        "secondary-fixed": "#c0ecd5",
+                        "primary-container": "#ffb88c",
+                        "surface-variant": "#f8ddd1",
+                        "on-tertiary-fixed": "#410000",
+                        "on-background": "#261811",
+                        "surface-tint": "#87512d",
+                        "tertiary-fixed": "#ffdad4",
+                        "on-surface-variant": "#52443c",
+                        "outline": "#84746b",
+                        "on-tertiary-fixed-variant": "#8c170e",
+                        "primary-fixed": "#ffdbc8",
+                        "tertiary": "#ae3123",
+                        "on-tertiary-container": "#9e2519",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#87512d",
+                        "on-error": "#ffffff",
+                        "background": "#fff8f6",
+                        "surface": "#fff8f6",
+                        "inverse-primary": "#feb78b",
+                        "tertiary-container": "#ffb6aa",
+                        "inverse-on-surface": "#ffede6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "32px",
+                        "md": "24px",
+                        "xs": "4px",
+                        "base": "8px",
+                        "sm": "12px",
+                        "margin-edge": "32px",
+                        "gutter": "24px",
+                        "xl": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Quicksand"],
+                        "headline-lg": ["Quicksand"],
+                        "headline-lg-mobile": ["Quicksand"],
+                        "body-md": ["Quicksand"],
+                        "display-price": ["Quicksand"],
+                        "label-bold": ["Quicksand"],
+                        "body-lg": ["Quicksand"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "500" }],
+                        "display-price": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-bold": ["14px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.5", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+        }
+        .squishy-shadow {
+            box-shadow: 0px 6px 0px 0px rgba(58, 42, 34, 0.1), inset 0px 2px 0px 0px rgba(255, 255, 255, 0.5);
+            transition: all 0.15s ease;
+        }
+        .squishy-shadow:active {
+            box-shadow: inset 0px 4px 0px 0px rgba(58, 42, 34, 0.1);
+            transform: translateY(6px);
+        }
+        .avatar-selected {
+            border-color: #ffb88c;
+            background-color: #ffeae0;
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen flex items-center justify-center p-md text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<main class="w-full max-w-[1200px] grid md:grid-cols-2 gap-xl items-center relative z-10">
+<!-- Left Column: Branding & Avatar Picker -->
+<div class="flex flex-col items-center md:items-start text-center md:text-left gap-lg">
+<!-- Brand Logo & Mascot -->
+<div class="flex flex-col items-center md:items-start gap-md">
+<div class="w-48 h-48 rounded-[3rem] bg-surface-container-low shadow-[0px_8px_0px_0px_rgba(58,42,34,0.05),inset_0px_4px_0px_0px_rgba(255,255,255,0.8)] flex items-center justify-center p-sm overflow-hidden">
+<img class="w-full h-full object-contain rounded-[2rem]" data-alt="A cute, soft, squishy 3D rendered mochi blob character with a friendly smiling face. The character is blushing slightly and has a smooth, velvety texture in pastel peach and white colors. The lighting is soft and studio-like, creating a warm, inviting, kawaii aesthetic perfect for a dessert cafe branding." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmqLOz28VtDP3Zm13G9xVDpGVnvThDuM-F1fiRd2bdrWH_Sn2nGbBkVcc3to--v06HSrQ0A8weZceIOlcCS6r8FCFWJwYSMLf4ZpGDkgI4T2GSRQDBq108E8-QXSuxYOFHI1Rfe1gIeiTdK3MPpDcaF4xHdHnQEQUB719r8ycZCTnSRU0Cz-VYh1TvWJzNv_T3EyAZmpw7E5TrkKmBubkAIWrXoYzatenJDAS2Ud3GVJnsbAzT420_"/>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">Mochi &amp; Co.</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Tap your profile to begin.</p>
+</div>
+<!-- Avatar Picker -->
+<div class="flex flex-wrap justify-center md:justify-start gap-md pt-md w-full">
+<!-- Ann -->
+<button class="flex flex-col items-center gap-base group" onclick="selectAvatar(this)">
+<div class="w-20 h-20 rounded-full bg-surface-container border-4 border-surface-container-highest overflow-hidden squishy-shadow group-focus:avatar-selected transition-colors">
+<img class="w-full h-full object-cover" data-alt="A stylized 3D avatar icon of a cheerful cafe worker named Ann. She has short pink hair, round glasses, and is wearing a pastel brown apron. The style is cute, minimal, and matches the soft neomorphic design of the mochi cafe, set against a warm cream background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDs9crN6b-zluyRMDHCccOrNbrr7YyiKxfz-HWpcAHKEHikLoZrIThP0vz_FoGBycQDb1-xN2eobCTBFy44IH_2er_1ny-bsJUQ3CVF5QKNd7dMcfuq7wqWmlE15wJgjplUOTaIfNxYIJdNPJA5DuzCuPgOAMjZfhsRoYSkzvRx-8gisj-kGmBMbUHj_iS3ODKiLIM4QOAjb9VPqFbE4XBmxjiznE6y5V_ROTLUNnDEc2yJuJDdOs66"/>
+</div>
+<span class="font-label-bold text-label-bold text-on-surface-variant group-focus:text-primary transition-colors">Ann</span>
+</button>
+<!-- Ben -->
+<button class="flex flex-col items-center gap-base group" onclick="selectAvatar(this)">
+<div class="w-20 h-20 rounded-full bg-surface-container border-4 border-surface-container-highest overflow-hidden squishy-shadow group-focus:avatar-selected transition-colors">
+<img class="w-full h-full object-cover" data-alt="A stylized 3D avatar icon of a friendly cafe worker named Ben. He has messy brown hair, a warm smile, and is wearing a mint green barista shirt. The style is cute, minimal, and matches the soft neomorphic design of the mochi cafe, set against a warm cream background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoLvzCjlML2FfZ2d4nHWQ6iT-zILMSdNwSx1PpZfDhoG-7ptYvaffR_uaSA40Nu9MrzjhgSURxaYsTjGQsmoqZeeUy_9tZ9QGzvOClZwoxaDzRyL--hGZ9LMmYJLi8osRHELTYVYz8EJQiP4D76pXN0JRgeaVrsXKtEg4mOkYOII0RQNwnDM-PogV2Oxr3P-KAAW1gMZLnXj4eFfZZaRWXwSiFiVfGtw37vY28C4h5jNRXQNYlZtEc"/>
+</div>
+<span class="font-label-bold text-label-bold text-on-surface-variant group-focus:text-primary transition-colors">Ben</span>
+</button>
+<!-- Choi -->
+<button class="flex flex-col items-center gap-base group" onclick="selectAvatar(this)">
+<div class="w-20 h-20 rounded-full bg-surface-container border-4 border-surface-container-highest overflow-hidden squishy-shadow group-focus:avatar-selected transition-colors">
+<img class="w-full h-full object-cover" data-alt="A stylized 3D avatar icon of a bright cafe worker named Choi. They have styled black hair, energetic expression, and are wearing a pastel yellow bandana. The style is cute, minimal, and matches the soft neomorphic design of the mochi cafe, set against a warm cream background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXjQWWazjItYDjHdnbQYRu-3k8-bc6jh9dplF-79Fow82FpNbf6ruKreIf1GEKWgnnu1PJXSVO0kcAbv6MbLTlCgjr6kwBmSX3D5xA3vsBxbVQKseoRu2Zh0Efe4jQp7cYE_eea1Fxw-dMShrfIJYBcQSO6gaRCej8Xhcxafiun0G2M09MTkvbqxMUihPn4JYoKocqOsVi5oor79CZwc95uMIds9b67lplGGVXRS8qwWYKfUYg89_f"/>
+</div>
+<span class="font-label-bold text-label-bold text-on-surface-variant group-focus:text-primary transition-colors">Choi</span>
+</button>
+<!-- Dee -->
+<button class="flex flex-col items-center gap-base group" onclick="selectAvatar(this)">
+<div class="w-20 h-20 rounded-full bg-surface-container border-4 border-surface-container-highest overflow-hidden squishy-shadow group-focus:avatar-selected transition-colors">
+<img class="w-full h-full object-cover" data-alt="A stylized 3D avatar icon of a relaxed cafe worker named Dee. She has a neat bun, small hoop earrings, and is wearing a soft peach uniform. The style is cute, minimal, and matches the soft neomorphic design of the mochi cafe, set against a warm cream background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwEvTtV7oY6IuNR_9CNg1I77PbuN6YWfaj7Qhi4PSOXgWaCWrmDUN_YqpPv_Voy8JlgGxEtTkA58gwHMCfZpvAckZN_GLY7qZ2VyxKW-K08FXHluUchjq3xnMWagCmMFoStRPatZrvRiWSXYp4vbikC9E4hfEgUHkPFBypdi30znvsbJlyI1yCCjNp1A8IGIeiOkId8IZzFKrh1x-PHK-YtldeKM9sReGefSAnWwO6nDaN9J4B4bC4"/>
+</div>
+<span class="font-label-bold text-label-bold text-on-surface-variant group-focus:text-primary transition-colors">Dee</span>
+</button>
+<!-- Eve -->
+<button class="flex flex-col items-center gap-base group" onclick="selectAvatar(this)">
+<div class="w-20 h-20 rounded-full bg-surface-container border-4 border-surface-container-highest overflow-hidden squishy-shadow group-focus:avatar-selected transition-colors">
+<img class="w-full h-full object-cover" data-alt="A stylized 3D avatar icon of an enthusiastic cafe worker named Eve. She has curly hair, colorful clips, and is wearing a bright white chef coat. The style is cute, minimal, and matches the soft neomorphic design of the mochi cafe, set against a warm cream background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuAXAd0mhi530VBY3X7b5e0IEP0JQU_ej1dfdAvGAYYEr7uxTsSIoV9Cw9BLQXYFFSqvHLWxi-hrWGp-3ojfWr4BVmjcf8mn4vKi6rBmzjcfF--s9TiIbBVkw40ulr9ryTr5oseDbwOm3BKqYioyxnWGPY5l7G8qIEkPt7TyjBXy0NDDfuZ1ThNo8XK3urVHtQiK67rwwPV4uYcFTtQU5T0ToTrare0K5bZkFLAQJIbd_77fWQKs2p"/>
+</div>
+<span class="font-label-bold text-label-bold text-on-surface-variant group-focus:text-primary transition-colors">Eve</span>
+</button>
+</div>
+</div>
+<!-- Right Column: Numpad & PIN Entry -->
+<div class="bg-surface-container-low rounded-[3rem] p-lg shadow-[0px_8px_0px_0px_rgba(58,42,34,0.05)] border-2 border-surface-container-highest max-w-md mx-auto w-full">
+<div class="flex flex-col items-center gap-lg">
+<h2 class="font-headline-md text-headline-md text-primary">Enter PIN</h2>
+<!-- PIN Dots -->
+<div class="flex gap-md mb-md">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest shadow-inner" id="pin-dot-1"></div>
+<div class="w-6 h-6 rounded-full bg-surface-container-highest shadow-inner" id="pin-dot-2"></div>
+<div class="w-6 h-6 rounded-full bg-surface-container-highest shadow-inner" id="pin-dot-3"></div>
+<div class="w-6 h-6 rounded-full bg-surface-container-highest shadow-inner" id="pin-dot-4"></div>
+</div>
+<!-- Numpad Grid -->
+<div class="grid grid-cols-3 gap-md w-full">
+<!-- Row 1 -->
+<button class="w-full aspect-square rounded-full bg-surface text-primary font-display-price text-display-price squishy-shadow flex items-center justify-center border-2 border-surface-container-highest" onclick="enterPin()">1</button>
+<button class="w-full aspect-square rounded-full bg-surface text-primary font-display-price text-display-price squishy-shadow flex items-center justify-center border-2 border-surface-container-highest" onclick="enterPin()">2</button>
+<button class="w-full aspect-square rounded-full bg-surface text-primary font-display-price text-display-price squishy-shadow flex items-center justify-center border-2 border-surface-container-highest" onclick="enterPin()">3</button>
+<!-- Row 2 -->
+<button class="w-full aspect-square rounded-full bg-surface text-primary font-display-price text-display-price squishy-shadow flex items-center justify-center border-2 border-surface-container-highest" onclick="enterPin()">4</button>
+<button class="w-full aspect-square rounded-full bg-surface text-primary font-display-price text-display-price squishy-shadow flex items-center justify-center border-2 border-surface-container-highest" onclick="enterPin()">5</button>
+<button class="w-full aspect-square rounded-full bg-surface text-primary font-display-price text-display-price squishy-shadow flex items-center justify-center border-2 border-surface-container-highest" onclick="enterPin()">6</button>
+<!-- Row 3 -->
+<button class="w-full aspect-square rounded-full bg-surface text-primary font-display-price text-display-price squishy-shadow flex items-center justify-center border-2 border-surface-container-highest" onclick="enterPin()">7</button>
+<button class="w-full aspect-square rounded-full bg-surface text-primary font-display-price text-display-price squishy-shadow flex items-center justify-center border-2 border-surface-container-highest" onclick="enterPin()">8</button>
+<button class="w-full aspect-square rounded-full bg-surface text-primary font-display-price text-display-price squishy-shadow flex items-center justify-center border-2 border-surface-container-highest" onclick="enterPin()">9</button>
+<!-- Row 4 -->
+<button class="w-full aspect-square rounded-full bg-surface-container-highest text-on-surface-variant font-label-bold text-label-bold squishy-shadow flex items-center justify-center" onclick="clearPin()">Clear</button>
+<button class="w-full aspect-square rounded-full bg-surface text-primary font-display-price text-display-price squishy-shadow flex items-center justify-center border-2 border-surface-container-highest" onclick="enterPin()">0</button>
+<button class="w-full aspect-square rounded-full bg-primary-container text-on-primary-container font-label-bold text-label-bold squishy-shadow flex items-center justify-center" onclick="submitPin()">OK</button>
+</div>
+<a class="font-body-md text-body-md text-primary mt-sm hover:underline" href="#">Forgot PIN?</a>
+</div>
+</div>
+</main>
+<script>
+        let pinCount = 0;
+        
+        function selectAvatar(btn) {
+            // Remove selection from all
+            document.querySelectorAll('button > div.w-20').forEach(div => {
+                div.classList.remove('border-primary-container', 'bg-surface-container-low');
+                div.classList.add('border-surface-container-highest', 'bg-surface-container');
+            });
+            // Add to clicked
+            const avatarDiv = btn.querySelector('div');
+            avatarDiv.classList.remove('border-surface-container-highest', 'bg-surface-container');
+            avatarDiv.classList.add('border-primary-container', 'bg-surface-container-low');
+        }
+
+        function enterPin() {
+            if (pinCount < 4) {
+                pinCount++;
+                document.getElementById(`pin-dot-${pinCount}`).classList.replace('bg-surface-container-highest', 'bg-primary');
+                document.getElementById(`pin-dot-${pinCount}`).classList.replace('shadow-inner', 'shadow-none');
+            }
+        }
+
+        function clearPin() {
+            pinCount = 0;
+            for(let i=1; i<=4; i++) {
+                document.getElementById(`pin-dot-${i}`).classList.replace('bg-primary', 'bg-surface-container-highest');
+                document.getElementById(`pin-dot-${i}`).classList.add('shadow-inner');
+            }
+        }
+
+        function submitPin() {
+            if (pinCount === 4) {
+                // Flash success
+                const dots = [1,2,3,4].map(i => document.getElementById(`pin-dot-${i}`));
+                dots.forEach(d => d.classList.replace('bg-primary', 'bg-secondary'));
+                setTimeout(() => {
+                    clearPin();
+                }, 500);
+            } else {
+                // Shake error
+                const container = document.querySelector('.flex.gap-md.mb-md');
+                container.style.transform = 'translateX(-10px)';
+                setTimeout(() => container.style.transform = 'translateX(10px)', 50);
+                setTimeout(() => container.style.transform = 'translateX(-10px)', 100);
+                setTimeout(() => container.style.transform = 'translateX(10px)', 150);
+                setTimeout(() => container.style.transform = 'translateX(0)', 200);
+                setTimeout(clearPin, 400);
+            }
+        }
+    </script>
+</body></html>

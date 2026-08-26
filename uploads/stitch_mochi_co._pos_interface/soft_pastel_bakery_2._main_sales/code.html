@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mochi &amp; Co. - POS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#93000a",
+                        "on-surface": "#261811",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#264e3d",
+                        "on-secondary-fixed": "#002115",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#feb78b",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#7a4624",
+                        "secondary-fixed-dim": "#a5d0ba",
+                        "surface-container-low": "#fff1eb",
+                        "tertiary-fixed-dim": "#ffb4a8",
+                        "on-primary-fixed": "#311300",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#436b58",
+                        "surface-dim": "#f0d5c8",
+                        "inverse-surface": "#3d2d25",
+                        "on-primary-fixed-variant": "#6b3a18",
+                        "secondary-container": "#beead3",
+                        "secondary": "#3e6654",
+                        "surface-bright": "#fff8f6",
+                        "surface-container": "#ffeae0",
+                        "surface-container-high": "#fee3d6",
+                        "outline-variant": "#d7c3b8",
+                        "surface-container-highest": "#f8ddd1",
+                        "secondary-fixed": "#c0ecd5",
+                        "primary-container": "#ffb88c",
+                        "surface-variant": "#f8ddd1",
+                        "on-tertiary-fixed": "#410000",
+                        "on-background": "#261811",
+                        "surface-tint": "#87512d",
+                        "tertiary-fixed": "#ffdad4",
+                        "on-surface-variant": "#52443c",
+                        "outline": "#84746b",
+                        "on-tertiary-fixed-variant": "#8c170e",
+                        "primary-fixed": "#ffdbc8",
+                        "tertiary": "#ae3123",
+                        "on-tertiary-container": "#9e2519",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#87512d",
+                        "on-error": "#ffffff",
+                        "background": "#fff8f6",
+                        "surface": "#fff8f6",
+                        "inverse-primary": "#feb78b",
+                        "tertiary-container": "#ffb6aa",
+                        "inverse-on-surface": "#ffede6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "32px",
+                        "md": "24px",
+                        "xs": "4px",
+                        "base": "8px",
+                        "sm": "12px",
+                        "margin-edge": "32px",
+                        "gutter": "24px",
+                        "xl": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Quicksand"],
+                        "headline-lg": ["Quicksand"],
+                        "headline-lg-mobile": ["Quicksand"],
+                        "body-md": ["Quicksand"],
+                        "display-price": ["Quicksand"],
+                        "label-bold": ["Quicksand"],
+                        "body-lg": ["Quicksand"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "500" }],
+                        "display-price": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-bold": ["14px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.5", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .squishy-shadow {
+            box-shadow: 0px 8px 0px 0px rgba(58,42,34,0.1), inset 0px 2px 0px 0px rgba(255,255,255,0.5);
+            transition: all 0.15s ease-in-out;
+        }
+        .squishy-shadow:active {
+            box-shadow: inset 0px 4px 0px 0px rgba(58,42,34,0.1);
+            transform: translateY(4px);
+        }
+        .cart-torn-edge {
+            mask-image: url('data:image/svg+xml;utf8,<svg preserveAspectRatio="none" viewBox="0 0 100 10" xmlns="http://www.w3.org/2000/svg"><path d="M0 10 L5 0 L10 10 L15 0 L20 10 L25 0 L30 10 L35 0 L40 10 L45 0 L50 10 L55 0 L60 10 L65 0 L70 10 L75 0 L80 10 L85 0 L90 10 L95 0 L100 10 V10 H0 Z" fill="black"/></svg>');
+            mask-size: 100% 10px;
+            mask-repeat: no-repeat;
+            mask-position: top;
+            padding-top: 10px;
+        }
+        .cart-torn-edge-bottom {
+             mask-image: url('data:image/svg+xml;utf8,<svg preserveAspectRatio="none" viewBox="0 0 100 10" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L5 10 L10 0 L15 10 L20 0 L25 10 L30 0 L35 10 L40 0 L45 10 L50 0 L55 10 L60 0 L65 10 L70 0 L75 10 L80 0 L85 10 L90 0 L95 10 L100 0 V0 H0 Z" fill="black"/></svg>');
+            mask-size: 100% 10px;
+            mask-repeat: no-repeat;
+            mask-position: bottom;
+            padding-bottom: 10px;
+        }
+        
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md h-screen overflow-hidden flex flex-col antialiased">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-xl bg-surface shadow-[0px_4px_0px_0px_rgba(58,42,34,0.1)]">
+<div class="font-headline-md text-headline-md font-bold text-primary">Mochi &amp; Co.</div>
+<div class="flex items-center gap-md">
+<div class="relative w-64 mr-lg">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant" style="font-variation-settings: 'FILL' 0;">barcode_scanner</span>
+<input class="w-full pl-xl pr-sm py-sm rounded-full border-2 border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-0 transition-colors text-on-surface placeholder:text-on-surface-variant font-body-md h-12" placeholder="Scan or Search..." type="text"/>
+</div>
+<div class="flex items-center bg-surface-container rounded-full px-sm py-xs gap-xs squishy-shadow">
+<img class="w-8 h-8 object-cover rounded-full" data-alt="A small, cute 3D illustration of a smiling pink mochi character serving as a mascot. It sits against a transparent background, lit softly to look squishy and inviting. High quality, pastel colors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBY6KUc_3VG6XBuuKTS13O-gk3Bnc_n525MpEUcBSXbB3ebWlWBi9Kln_oM7fLLlr0N2NbYlHsPOTw6_jIxHAfi9vK5I3GHe7ztRYKO2YRwog4zYWLe0C6hZ_qF-p5n-TBnjg3lBmDpWQQTKIC1MRt-xb3xjiwoIvIHSX74XOoOMd99N3DPfEsGop8vuxXmPHQ3DUnXGAHO0WqSEbYyDaoxRw13hi_gDaVae3JYXcvLoxeiL_ok_sBk"/>
+<span class="font-label-bold text-label-bold text-on-surface mr-sm">Sales: 42</span>
+</div>
+<button class="w-12 h-12 flex items-center justify-center rounded-full text-primary hover:bg-primary-container/20 transition-colors active:translate-y-0.5 active:shadow-none transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_circle</span>
+</button>
+<button class="w-12 h-12 flex items-center justify-center rounded-full text-primary hover:bg-primary-container/20 transition-colors active:translate-y-0.5 active:shadow-none transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+<button class="w-12 h-12 flex items-center justify-center rounded-full text-primary hover:bg-primary-container/20 transition-colors active:translate-y-0.5 active:shadow-none transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">monitoring</span>
+</button>
+</div>
+</header>
+<div class="flex flex-1 pt-xl h-full">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-xl h-[calc(100vh-48px)] flex flex-col p-md z-40 bg-surface-container-low shadow-[4px_0px_0px_0px_rgba(58,42,34,0.05)] w-64 rounded-r-lg">
+<div class="mb-lg px-sm">
+<h2 class="font-headline-md text-headline-md text-primary">Categories</h2>
+<p class="text-on-surface-variant text-sm mt-xs">Fresh Daily</p>
+</div>
+<ul class="flex flex-col gap-sm flex-1">
+<li>
+<button class="w-full flex items-center gap-base bg-primary-container text-on-primary-container rounded-full p-md shadow-[0px_4px_0px_0px_rgba(58,42,34,0.1)] active:scale-95 duration-150">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bakery_dining</span>
+<span class="font-label-bold text-label-bold">Mochi</span>
+</button>
+</li>
+<li>
+<button class="w-full flex items-center gap-base text-on-surface-variant border-2 border-outline-variant rounded-full p-md hover:border-primary hover:text-primary transition-all active:scale-95 duration-150">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">cake</span>
+<span class="font-label-bold text-label-bold">Cakes</span>
+</button>
+</li>
+<li>
+<button class="w-full flex items-center gap-base text-on-surface-variant border-2 border-outline-variant rounded-full p-md hover:border-primary hover:text-primary transition-all active:scale-95 duration-150">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">local_cafe</span>
+<span class="font-label-bold text-label-bold">Drinks</span>
+</button>
+</li>
+<li>
+<button class="w-full flex items-center gap-base text-on-surface-variant border-2 border-outline-variant rounded-full p-md hover:border-primary hover:text-primary transition-all active:scale-95 duration-150">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">inventory_2</span>
+<span class="font-label-bold text-label-bold">Seasonal</span>
+</button>
+</li>
+</ul>
+<div class="mt-auto">
+<button class="w-full flex items-center gap-base text-on-surface-variant border-2 border-outline-variant rounded-full p-md hover:border-primary hover:text-primary transition-all active:scale-95 duration-150">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+<span class="font-label-bold text-label-bold">Settings</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 ml-64 flex bg-background">
+<!-- Product Grid -->
+<div class="flex-1 p-lg overflow-y-auto no-scrollbar">
+<div class="grid grid-cols-4 gap-lg pb-xl">
+<!-- Product Card 1 -->
+<button class="bg-surface-container-lowest rounded-xl p-md flex flex-col items-center relative squishy-shadow group">
+<div class="w-full aspect-square rounded-lg bg-surface-container mb-md flex items-center justify-center overflow-hidden">
+<img class="w-3/4 h-3/4 object-contain group-hover:scale-110 transition-transform duration-300" data-alt="A 3D rendering of a soft, squishy strawberry mochi. It is light pink with a slight dusting of white powder. Placed centrally on a pastel background. Soft lighting to emphasize its texture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBb3Oa6IUxdLeAmXea7EcIyEWzjxPzFJPw1L9rayiKeB1mY7cai-ACNPZ2JPcSciDS44AVd6Rg-Gp9hBaVqrMmpkOOSI5EOOdO6I_rZHIZjdhNzUoGNjwKEVsfNQdOvH6PIQUUF06NOVd_a4c5WFkvz9QSvfZ7P158KODaBaVNepIC-nlkl1M4S8SeFpMb6gRFk5YWkjU0ACBKGOt7rMivIJewoT7CFK6sesPxwzTyvcE-8TNUCjUV1"/>
+</div>
+<h3 class="font-body-lg text-body-lg text-on-surface text-center mb-sm w-full truncate">Strawberry Mochi</h3>
+<div class="absolute -bottom-4 -right-4 w-16 h-16 bg-primary rounded-full flex items-center justify-center text-on-primary font-label-bold text-label-bold squishy-shadow">
+                            ฿45
+                        </div>
+</button>
+<!-- Product Card 2 -->
+<button class="bg-surface-container-lowest rounded-xl p-md flex flex-col items-center relative squishy-shadow group">
+<div class="w-full aspect-square rounded-lg bg-surface-container mb-md flex items-center justify-center overflow-hidden">
+<img class="w-3/4 h-3/4 object-contain group-hover:scale-110 transition-transform duration-300" data-alt="A 3D rendering of a soft matcha green mochi. It has a slightly textured surface and a rich green color. Placed centrally on a pastel background. Soft, warm lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDy-hTgEMGKBub0pJNlXZXF2TTvxGQMFoDYeSGHjZKR02EeUW-x-_eM1I6ARwbctlGZ4sgMi2qJ21EdTSc_xqTpaO2UFGJDBfTmpDFe49ofJlRuk0_ywTOqwpwjP5e21PfLV5lyS-8wU8kRQBor0HoCUfo0hIoywM8gP4V3fLNU0bYcBBXpMz0BIyqfL0OEJa85H30uaixqIZsKwBZb9YfK6OaF-jq2X6SAJIM38EsLdjc46A59pItw"/>
+</div>
+<h3 class="font-body-lg text-body-lg text-on-surface text-center mb-sm w-full truncate">Matcha Dream</h3>
+<div class="absolute -bottom-4 -right-4 w-16 h-16 bg-primary rounded-full flex items-center justify-center text-on-primary font-label-bold text-label-bold squishy-shadow">
+                            ฿50
+                        </div>
+</button>
+<!-- Repeat for other 10 items to make 12 total -->
+<button class="bg-surface-container-lowest rounded-xl p-md flex flex-col items-center relative squishy-shadow group">
+<div class="w-full aspect-square rounded-lg bg-surface-container mb-md flex items-center justify-center overflow-hidden">
+<img class="w-3/4 h-3/4 object-contain group-hover:scale-110 transition-transform duration-300" data-alt="A 3D rendering of a chocolate filled mochi. Deep brown and smooth, dusted with cocoa. Placed centrally on a pastel background. Soft, warm lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXQ7EG7LL5gmJ4UGIsbO98oJAhLfmVBTTuxZvyaGdlshOovy6REgkNNRg5f9TKpw1paDvWOp3yN9GE6-oWw6mYGuJ70Sn9hBSEyjzSjD7lrtcD8EGOFqOroy6lIw4MoFZ6j_paug_m51PMjg6bDZykF2fLw0Uj4ZhO4o71wHqVINK5Z78dSYSqe-q7ulEVCE5Dy1kEFU_j4svNczsYAKvq0NUxQ54eStstY7bxMGK41k4Nx7DSZvHE"/>
+</div>
+<h3 class="font-body-lg text-body-lg text-on-surface text-center mb-sm w-full truncate">Choco Lava</h3>
+<div class="absolute -bottom-4 -right-4 w-16 h-16 bg-primary rounded-full flex items-center justify-center text-on-primary font-label-bold text-label-bold squishy-shadow">
+                            ฿60
+                        </div>
+</button>
+<button class="bg-surface-container-lowest rounded-xl p-md flex flex-col items-center relative squishy-shadow group">
+<div class="w-full aspect-square rounded-lg bg-surface-container mb-md flex items-center justify-center overflow-hidden">
+<img class="w-3/4 h-3/4 object-contain group-hover:scale-110 transition-transform duration-300" data-alt="A 3D rendering of a soft mango mochi. Bright yellow and inviting. Placed centrally on a pastel background. Soft, warm lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqMwaHG6OAj3RhA3f-Td3pBOHe15AjeUM7O7_l4WaOYon5d-Hf1cR24Eu-NKLiIK8S_SZfcDilPeCrP73hjk6KVxFfxRezHlf-2kggAnbLYQi6w0nx6BxNqUxMA40fujEQUTOtWgilsRKbP0Xf9sqvTj0zlDA3fhgbhz8dfltHiko8QIRaJFluK0YZlFYErfo5GH6Pu4mPY35NZdbX4XBDp2ew1s9yxP7cNwBbeYUPXAVT247bMgq7"/>
+</div>
+<h3 class="font-body-lg text-body-lg text-on-surface text-center mb-sm w-full truncate">Mango Tango</h3>
+<div class="absolute -bottom-4 -right-4 w-16 h-16 bg-primary rounded-full flex items-center justify-center text-on-primary font-label-bold text-label-bold squishy-shadow">
+                            ฿45
+                        </div>
+</button>
+<button class="bg-surface-container-lowest rounded-xl p-md flex flex-col items-center relative squishy-shadow group">
+<div class="w-full aspect-square rounded-lg bg-surface-container mb-md flex items-center justify-center overflow-hidden">
+<img class="w-3/4 h-3/4 object-contain group-hover:scale-110 transition-transform duration-300" data-alt="A 3D rendering of a soft taro mochi. Light purple and smooth. Placed centrally on a pastel background. Soft, warm lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0DdP-UjIUL0BDMy9yrsO1SIETqj8xsQNQYJB_0fRmgAoGhRkuVf7k4xAJo2ImPyZm24YqsoBTHBs3uticSJoRGCXISDFzjM3cKU8jDdqmTFq8rW7qH9jsxKCQdsQIqgU3xErFayl-0204ZYyWesyAu7Mda3JffhzLoQrDLMZmjGGkEMmyaf_aYT7B3DazcAOhBf8B9BnTx20ehnGa7tSCs_9JZSwGPP4E8socK2dg3N_ajT2mj30K"/>
+</div>
+<h3 class="font-body-lg text-body-lg text-on-surface text-center mb-sm w-full truncate">Taro Swirl</h3>
+<div class="absolute -bottom-4 -right-4 w-16 h-16 bg-primary rounded-full flex items-center justify-center text-on-primary font-label-bold text-label-bold squishy-shadow">
+                            ฿50
+                        </div>
+</button>
+</div>
+</div>
+<!-- Receipt / Cart Panel -->
+<div class="w-[400px] h-full bg-surface-container-lowest shadow-[-8px_0px_16px_0px_rgba(58,42,34,0.05)] flex flex-col z-30 cart-torn-edge cart-torn-edge-bottom">
+<div class="p-lg flex-1 overflow-y-auto no-scrollbar flex flex-col gap-sm">
+<!-- Cart Item -->
+<div class="bg-surface-bright rounded-lg p-sm flex items-center justify-between border-2 border-outline-variant border-dashed">
+<div>
+<p class="font-label-bold text-label-bold text-on-surface">Strawberry Mochi</p>
+<p class="text-on-surface-variant text-sm">฿45 x 2</p>
+</div>
+<div class="flex items-center gap-2 bg-surface-container rounded-full p-1">
+<button class="w-8 h-8 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary squishy-shadow shadow-sm active:scale-95">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">remove</span>
+</button>
+<span class="font-label-bold text-label-bold w-6 text-center">2</span>
+<button class="w-8 h-8 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary squishy-shadow shadow-sm active:scale-95">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">add</span>
+</button>
+</div>
+<p class="font-label-bold text-label-bold text-on-surface w-12 text-right">฿90</p>
+</div>
+<!-- Cart Item -->
+<div class="bg-surface-bright rounded-lg p-sm flex items-center justify-between border-2 border-outline-variant border-dashed">
+<div>
+<p class="font-label-bold text-label-bold text-on-surface">Matcha Dream</p>
+<p class="text-on-surface-variant text-sm">฿50 x 3</p>
+</div>
+<div class="flex items-center gap-2 bg-surface-container rounded-full p-1">
+<button class="w-8 h-8 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary squishy-shadow shadow-sm active:scale-95">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">remove</span>
+</button>
+<span class="font-label-bold text-label-bold w-6 text-center">3</span>
+<button class="w-8 h-8 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary squishy-shadow shadow-sm active:scale-95">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">add</span>
+</button>
+</div>
+<p class="font-label-bold text-label-bold text-on-surface w-12 text-right">฿150</p>
+</div>
+</div>
+<!-- Totals & Actions -->
+<div class="p-lg bg-surface-container-lowest mt-auto border-t-2 border-outline-variant border-dashed">
+<div class="flex justify-between mb-sm text-on-surface-variant">
+<span>Subtotal</span>
+<span>฿240</span>
+</div>
+<div class="flex justify-between mb-md text-error">
+<span>Discount</span>
+<span>-฿0</span>
+</div>
+<div class="flex justify-between items-end mb-lg">
+<span class="font-headline-md text-headline-md text-on-surface">Total</span>
+<span class="font-display-price text-display-price text-primary">฿240</span>
+</div>
+<div class="flex gap-sm mb-sm">
+<button class="flex-1 bg-surface-container rounded-full py-sm font-label-bold text-label-bold text-primary squishy-shadow active:scale-95">
+                            Hold
+                        </button>
+<button class="flex-1 bg-surface-container rounded-full py-sm font-label-bold text-label-bold text-primary squishy-shadow active:scale-95">
+                            Disc
+                        </button>
+<button class="flex-1 bg-error-container rounded-full py-sm font-label-bold text-label-bold text-error squishy-shadow active:scale-95">
+                            Void
+                        </button>
+</div>
+<button class="w-full bg-[#FF6B57] text-white rounded-full py-md font-headline-md text-headline-md squishy-shadow active:scale-95 shadow-[0px_8px_0px_0px_rgba(186,26,26,0.2)]">
+                        Charge ฿240
+                    </button>
+</div>
+</div>
+</main>
+</div>
+</body></html>

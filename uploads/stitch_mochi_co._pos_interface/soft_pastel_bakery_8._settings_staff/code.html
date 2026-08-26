@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mochi &amp; Co. - Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error-container": "#93000a",
+                      "on-surface": "#261811",
+                      "surface-container-lowest": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "on-secondary-fixed-variant": "#264e3d",
+                      "on-secondary-fixed": "#002115",
+                      "error": "#ba1a1a",
+                      "primary-fixed-dim": "#feb78b",
+                      "on-primary": "#ffffff",
+                      "on-primary-container": "#7a4624",
+                      "secondary-fixed-dim": "#a5d0ba",
+                      "surface-container-low": "#fff1eb",
+                      "tertiary-fixed-dim": "#ffb4a8",
+                      "on-primary-fixed": "#311300",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-container": "#436b58",
+                      "surface-dim": "#f0d5c8",
+                      "inverse-surface": "#3d2d25",
+                      "on-primary-fixed-variant": "#6b3a18",
+                      "secondary-container": "#beead3",
+                      "secondary": "#3e6654",
+                      "surface-bright": "#fff8f6",
+                      "surface-container": "#ffeae0",
+                      "surface-container-high": "#fee3d6",
+                      "outline-variant": "#d7c3b8",
+                      "surface-container-highest": "#f8ddd1",
+                      "secondary-fixed": "#c0ecd5",
+                      "primary-container": "#ffb88c",
+                      "surface-variant": "#f8ddd1",
+                      "on-tertiary-fixed": "#410000",
+                      "on-background": "#261811",
+                      "surface-tint": "#87512d",
+                      "tertiary-fixed": "#ffdad4",
+                      "on-surface-variant": "#52443c",
+                      "outline": "#84746b",
+                      "on-tertiary-fixed-variant": "#8c170e",
+                      "primary-fixed": "#ffdbc8",
+                      "tertiary": "#ae3123",
+                      "on-tertiary-container": "#9e2519",
+                      "on-tertiary": "#ffffff",
+                      "primary": "#87512d",
+                      "on-error": "#ffffff",
+                      "background": "#fff8f6",
+                      "surface": "#fff8f6",
+                      "inverse-primary": "#feb78b",
+                      "tertiary-container": "#ffb6aa",
+                      "inverse-on-surface": "#ffede6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "lg": "32px",
+                      "md": "24px",
+                      "xs": "4px",
+                      "base": "8px",
+                      "sm": "12px",
+                      "margin-edge": "32px",
+                      "gutter": "24px",
+                      "xl": "48px"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "Quicksand"
+                      ],
+                      "headline-lg": [
+                              "Quicksand"
+                      ],
+                      "headline-lg-mobile": [
+                              "Quicksand"
+                      ],
+                      "body-md": [
+                              "Quicksand"
+                      ],
+                      "display-price": [
+                              "Quicksand"
+                      ],
+                      "label-bold": [
+                              "Quicksand"
+                      ],
+                      "body-lg": [
+                              "Quicksand"
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-price": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-bold": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+      </script>
+<style>
+        .squishy-shadow {
+            box-shadow: 0px 8px 0px 0px rgba(58, 42, 34, 0.1), inset 0px 2px 0px 0px rgba(255, 255, 255, 0.4);
+            transition: all 0.15s ease-in-out;
+        }
+        .squishy-shadow:active, .squishy-active {
+            box-shadow: inset 0px 4px 8px 0px rgba(58, 42, 34, 0.15);
+            transform: translateY(4px);
+        }
+        .squishy-card {
+            box-shadow: 0px 6px 0px 0px rgba(58, 42, 34, 0.05), inset 0px 2px 0px 0px rgba(255, 255, 255, 0.6);
+        }
+      </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen">
+<!-- Top App Bar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-xl bg-surface dark:bg-surface-dim shadow-[0px_4px_0px_0px_rgba(58,42,34,0.1)]">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">
+            Mochi &amp; Co.
+        </div>
+<div class="flex items-center gap-base">
+<button class="p-sm rounded-full text-on-surface-variant hover:bg-primary-container/20 transition-colors active:translate-y-0.5 active:shadow-none transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+</button>
+<button class="p-sm rounded-full text-on-surface-variant hover:bg-primary-container/20 transition-colors active:translate-y-0.5 active:shadow-none transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
+</button>
+<button class="p-sm rounded-full text-on-surface-variant hover:bg-primary-container/20 transition-colors active:translate-y-0.5 active:shadow-none transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+</button>
+</div>
+</header>
+<!-- Side Nav Bar -->
+<nav class="fixed left-0 top-xl h-[calc(100vh-48px)] flex flex-col p-md z-40 bg-surface-container-low dark:bg-surface-container-lowest shadow-[4px_0px_0px_0px_rgba(58,42,34,0.05)] w-64 rounded-r-lg">
+<div class="mb-lg">
+<h2 class="font-headline-md text-headline-md text-primary">Categories</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Fresh Daily</p>
+</div>
+<ul class="flex flex-col gap-base">
+<li>
+<a class="flex items-center gap-base text-on-surface-variant border-2 border-outline-variant rounded-full p-md hover:border-primary hover:text-primary transition-all active:scale-95 duration-150 font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined">bakery_dining</span>
+                    Mochi
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-base text-on-surface-variant border-2 border-outline-variant rounded-full p-md hover:border-primary hover:text-primary transition-all active:scale-95 duration-150 font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined">cake</span>
+                    Cakes
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-base text-on-surface-variant border-2 border-outline-variant rounded-full p-md hover:border-primary hover:text-primary transition-all active:scale-95 duration-150 font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined">local_cafe</span>
+                    Drinks
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-base text-on-surface-variant border-2 border-outline-variant rounded-full p-md hover:border-primary hover:text-primary transition-all active:scale-95 duration-150 font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+                    Inventory
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-base bg-primary-container text-on-primary-container rounded-full p-md shadow-[0px_4px_0px_0px_rgba(58,42,34,0.1)] hover:border-primary hover:text-primary transition-all active:scale-95 duration-150 font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined">settings</span>
+                    Settings
+                </a>
+</li>
+</ul>
+</nav>
+<!-- Main Content Area -->
+<main class="ml-64 pt-xl min-h-screen grid grid-cols-12 gap-gutter p-gutter">
+<!-- Settings Inner Nav -->
+<aside class="col-span-3">
+<div class="bg-surface-container squishy-card rounded-xl p-md flex flex-col gap-base">
+<a class="flex items-center gap-base bg-primary text-on-primary rounded-full p-sm shadow-[0px_4px_0px_0px_rgba(58,42,34,0.1)] font-label-bold text-label-bold transition-all active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">storefront</span>
+                    Store
+                </a>
+<a class="flex items-center gap-base text-on-surface-variant hover:bg-surface-variant rounded-full p-sm transition-all active:scale-95 duration-150 font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined">badge</span>
+                    Staff
+                </a>
+<a class="flex items-center gap-base text-on-surface-variant hover:bg-surface-variant rounded-full p-sm transition-all active:scale-95 duration-150 font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+                    Receipt
+                </a>
+<a class="flex items-center gap-base text-on-surface-variant hover:bg-surface-variant rounded-full p-sm transition-all active:scale-95 duration-150 font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined">print</span>
+                    Printer
+                </a>
+<a class="flex items-center gap-base text-on-surface-variant hover:bg-surface-variant rounded-full p-sm transition-all active:scale-95 duration-150 font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined">request_quote</span>
+                    Taxes
+                </a>
+</div>
+</aside>
+<!-- Settings Content Canvas -->
+<div class="col-span-9 flex flex-col gap-gutter">
+<h1 class="font-headline-lg text-headline-lg text-primary">Store Configuration</h1>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-2 gap-gutter">
+<!-- Logo & Branding -->
+<section class="bg-surface-container squishy-card rounded-xl p-md flex flex-col gap-sm">
+<h3 class="font-body-lg text-body-lg text-primary border-b-2 border-outline-variant pb-xs">Branding</h3>
+<div class="flex items-center gap-md">
+<div class="w-24 h-24 rounded-full border-4 border-surface overflow-hidden shadow-sm flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A macro shot of a perfectly round, squishy pastel peach mochi resting on a clean white surface. Soft, warm directional lighting casts a gentle shadow, emphasizing its smooth, powdery texture and appetizing plumpness. The background is slightly blurred." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbQrwYa1P1OMsxdvWqOhUSUIO9v4ZsTlcNSgtWgkyYPqV70NDdoJ4Gv0ek1lZVUSuXdDbf3hB626RN37nKjqnDN3WVgSg9eIdllbnPrDcaEsDbjHSrtEYdGFqjqA4QShCW4TUxoa6K4RYm1M7oZD-jskDsLkPFoDcaMtoRfclFN-H6Z8h8dJ__WpZf5newMAwSVyGYPtLBPlxmCyx2q7xe211i8nGiDgMjCApDY9nXDU015VcgI9V6"/>
+</div>
+<div class="flex flex-col gap-xs w-full">
+<button class="bg-secondary-container text-on-secondary-container rounded-full py-xs px-sm squishy-shadow font-label-bold text-label-bold w-full text-center">
+                                Upload New Logo
+                            </button>
+<p class="text-[12px] text-on-surface-variant text-center">PNG or JPG, max 2MB</p>
+</div>
+</div>
+</section>
+<!-- Regional Settings -->
+<section class="bg-surface-container squishy-card rounded-xl p-md flex flex-col gap-sm">
+<h3 class="font-body-lg text-body-lg text-primary border-b-2 border-outline-variant pb-xs">Regional</h3>
+<div class="flex flex-col gap-xs">
+<label class="font-label-bold text-label-bold text-on-surface-variant pl-xs">Currency</label>
+<select class="w-full bg-surface-container-lowest border-2 border-outline-variant rounded-lg p-sm focus:border-primary-container focus:ring-0 text-on-surface font-body-md appearance-none">
+<option>USD ($)</option>
+<option>EUR (€)</option>
+<option>JPY (¥)</option>
+</select>
+</div>
+<div class="flex flex-col gap-xs mt-xs">
+<label class="font-label-bold text-label-bold text-on-surface-variant pl-xs">Default Tax Rate (%)</label>
+<input class="w-full bg-surface-container-lowest border-2 border-outline-variant rounded-lg p-sm focus:border-primary-container focus:ring-0 text-on-surface font-body-md" type="number" value="8.5"/>
+</div>
+</section>
+<!-- Operating Hours -->
+<section class="bg-surface-container squishy-card rounded-xl p-md col-span-2 flex flex-col gap-sm">
+<h3 class="font-body-lg text-body-lg text-primary border-b-2 border-outline-variant pb-xs">Operating Hours</h3>
+<div class="grid grid-cols-7 gap-sm mt-sm">
+<!-- Day 1 -->
+<div class="flex flex-col items-center gap-xs">
+<div class="w-full text-center font-label-bold text-label-bold text-on-surface-variant bg-surface-variant rounded-t-lg py-xs">Mon</div>
+<input class="w-full text-center bg-surface-container-lowest border-2 border-outline-variant p-xs text-sm focus:border-primary-container focus:ring-0 rounded" type="text" value="08:00"/>
+<input class="w-full text-center bg-surface-container-lowest border-2 border-outline-variant p-xs text-sm focus:border-primary-container focus:ring-0 rounded-b-lg" type="text" value="18:00"/>
+</div>
+<!-- Day 2 -->
+<div class="flex flex-col items-center gap-xs">
+<div class="w-full text-center font-label-bold text-label-bold text-on-surface-variant bg-surface-variant rounded-t-lg py-xs">Tue</div>
+<input class="w-full text-center bg-surface-container-lowest border-2 border-outline-variant p-xs text-sm focus:border-primary-container focus:ring-0 rounded" type="text" value="08:00"/>
+<input class="w-full text-center bg-surface-container-lowest border-2 border-outline-variant p-xs text-sm focus:border-primary-container focus:ring-0 rounded-b-lg" type="text" value="18:00"/>
+</div>
+<!-- Day 3 -->
+<div class="flex flex-col items-center gap-xs">
+<div class="w-full text-center font-label-bold text-label-bold text-on-surface-variant bg-surface-variant rounded-t-lg py-xs">Wed</div>
+<input class="w-full text-center bg-surface-container-lowest border-2 border-outline-variant p-xs text-sm focus:border-primary-container focus:ring-0 rounded" type="text" value="08:00"/>
+<input class="w-full text-center bg-surface-container-lowest border-2 border-outline-variant p-xs text-sm focus:border-primary-container focus:ring-0 rounded-b-lg" type="text" value="18:00"/>
+</div>
+<!-- Day 4 -->
+<div class="flex flex-col items-center gap-xs">
+<div class="w-full text-center font-label-bold text-label-bold text-on-surface-variant bg-surface-variant rounded-t-lg py-xs">Thu</div>
+<input class="w-full text-center bg-surface-container-lowest border-2 border-outline-variant p-xs text-sm focus:border-primary-container focus:ring-0 rounded" type="text" value="08:00"/>
+<input class="w-full text-center bg-surface-container-lowest border-2 border-outline-variant p-xs text-sm focus:border-primary-container focus:ring-0 rounded-b-lg" type="text" value="18:00"/>
+</div>
+<!-- Day 5 -->
+<div class="flex flex-col items-center gap-xs">
+<div class="w-full text-center font-label-bold text-label-bold text-on-surface-variant bg-surface-variant rounded-t-lg py-xs">Fri</div>
+<input class="w-full text-center bg-surface-container-lowest border-2 border-outline-variant p-xs text-sm focus:border-primary-container focus:ring-0 rounded" type="text" value="08:00"/>
+<input class="w-full text-center bg-surface-container-lowest border-2 border-outline-variant p-xs text-sm focus:border-primary-container focus:ring-0 rounded-b-lg" type="text" value="20:00"/>
+</div>
+<!-- Day 6 -->
+<div class="flex flex-col items-center gap-xs">
+<div class="w-full text-center font-label-bold text-label-bold text-on-surface-variant bg-surface-variant rounded-t-lg py-xs">Sat</div>
+<input class="w-full text-center bg-surface-container-lowest border-2 border-outline-variant p-xs text-sm focus:border-primary-container focus:ring-0 rounded" type="text" value="09:00"/>
+<input class="w-full text-center bg-surface-container-lowest border-2 border-outline-variant p-xs text-sm focus:border-primary-container focus:ring-0 rounded-b-lg" type="text" value="20:00"/>
+</div>
+<!-- Day 7 -->
+<div class="flex flex-col items-center gap-xs opacity-60">
+<div class="w-full text-center font-label-bold text-label-bold text-on-surface-variant bg-surface-variant rounded-t-lg py-xs">Sun</div>
+<div class="w-full h-full min-h-[60px] bg-surface-container-lowest border-2 border-outline-variant border-dashed rounded-b-lg flex items-center justify-center text-sm text-on-surface-variant">Closed</div>
+</div>
+</div>
+</section>
+</div>
+<div class="flex justify-end mt-sm">
+<button class="bg-primary text-on-primary rounded-full py-sm px-lg squishy-shadow font-label-bold text-label-bold">
+                    Save Changes
+                </button>
+</div>
+</div>
+</main>
+</body></html>

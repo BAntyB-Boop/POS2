@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mochi &amp; Co. - Payment</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "on-error-container": "#93000a",
+                            "on-surface": "#261811",
+                            "surface-container-lowest": "#ffffff",
+                            "error-container": "#ffdad6",
+                            "on-secondary-fixed-variant": "#264e3d",
+                            "on-secondary-fixed": "#002115",
+                            "error": "#ba1a1a",
+                            "primary-fixed-dim": "#feb78b",
+                            "on-primary": "#ffffff",
+                            "on-primary-container": "#7a4624",
+                            "secondary-fixed-dim": "#a5d0ba",
+                            "surface-container-low": "#fff1eb",
+                            "tertiary-fixed-dim": "#ffb4a8",
+                            "on-primary-fixed": "#311300",
+                            "on-secondary": "#ffffff",
+                            "on-secondary-container": "#436b58",
+                            "surface-dim": "#f0d5c8",
+                            "inverse-surface": "#3d2d25",
+                            "on-primary-fixed-variant": "#6b3a18",
+                            "secondary-container": "#beead3",
+                            "secondary": "#3e6654",
+                            "surface-bright": "#fff8f6",
+                            "surface-container": "#ffeae0",
+                            "surface-container-high": "#fee3d6",
+                            "outline-variant": "#d7c3b8",
+                            "surface-container-highest": "#f8ddd1",
+                            "secondary-fixed": "#c0ecd5",
+                            "primary-container": "#ffb88c",
+                            "surface-variant": "#f8ddd1",
+                            "on-tertiary-fixed": "#410000",
+                            "on-background": "#261811",
+                            "surface-tint": "#87512d",
+                            "tertiary-fixed": "#ffdad4",
+                            "on-surface-variant": "#52443c",
+                            "outline": "#84746b",
+                            "on-tertiary-fixed-variant": "#8c170e",
+                            "primary-fixed": "#ffdbc8",
+                            "tertiary": "#ae3123",
+                            "on-tertiary-container": "#9e2519",
+                            "on-tertiary": "#ffffff",
+                            "primary": "#87512d",
+                            "on-error": "#ffffff",
+                            "background": "#fff8f6",
+                            "surface": "#fff8f6",
+                            "inverse-primary": "#feb78b",
+                            "tertiary-container": "#ffb6aa",
+                            "inverse-on-surface": "#ffede6"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "1rem",
+                            "lg": "2rem",
+                            "xl": "3rem",
+                            "full": "9999px"
+                    },
+                    "spacing": {
+                            "lg": "32px",
+                            "md": "24px",
+                            "xs": "4px",
+                            "base": "8px",
+                            "sm": "12px",
+                            "margin-edge": "32px",
+                            "gutter": "24px",
+                            "xl": "48px"
+                    },
+                    "fontFamily": {
+                            "headline-md": [
+                                    "Quicksand"
+                            ],
+                            "headline-lg": [
+                                    "Quicksand"
+                            ],
+                            "headline-lg-mobile": [
+                                    "Quicksand"
+                            ],
+                            "body-md": [
+                                    "Quicksand"
+                            ],
+                            "display-price": [
+                                    "Quicksand"
+                            ],
+                            "label-bold": [
+                                    "Quicksand"
+                            ],
+                            "body-lg": [
+                                    "Quicksand"
+                            ]
+                    },
+                    "fontSize": {
+                            "headline-md": [
+                                    "24px",
+                                    {
+                                            "lineHeight": "1.2",
+                                            "fontWeight": "700"
+                                    }
+                            ],
+                            "headline-lg": [
+                                    "32px",
+                                    {
+                                            "lineHeight": "1.2",
+                                            "fontWeight": "700"
+                                    }
+                            ],
+                            "headline-lg-mobile": [
+                                    "28px",
+                                    {
+                                            "lineHeight": "1.2",
+                                            "fontWeight": "700"
+                                    }
+                            ],
+                            "body-md": [
+                                    "16px",
+                                    {
+                                            "lineHeight": "1.5",
+                                            "fontWeight": "500"
+                                    }
+                            ],
+                            "display-price": [
+                                    "48px",
+                                    {
+                                            "lineHeight": "1.1",
+                                            "letterSpacing": "-0.02em",
+                                            "fontWeight": "700"
+                                    }
+                            ],
+                            "label-bold": [
+                                    "14px",
+                                    {
+                                            "lineHeight": "1.2",
+                                            "fontWeight": "700"
+                                    }
+                            ],
+                            "body-lg": [
+                                    "18px",
+                                    {
+                                            "lineHeight": "1.5",
+                                            "fontWeight": "600"
+                                    }
+                            ]
+                    }
+            },
+                },
+        }
+    </script>
+<style>
+        .squishy-shadow {
+            box-shadow: 0px 8px 0px 0px rgba(58, 42, 34, 0.1), inset 0px 2px 0px 0px rgba(255, 255, 255, 0.5);
+            transition: all 0.1s ease;
+        }
+        .squishy-shadow:active {
+            box-shadow: 0px 0px 0px 0px rgba(58, 42, 34, 0.1), inset 0px 4px 8px 0px rgba(58, 42, 34, 0.1);
+            transform: translateY(8px);
+        }
+        .squishy-shadow-sm {
+            box-shadow: 0px 4px 0px 0px rgba(58, 42, 34, 0.1), inset 0px 1px 0px 0px rgba(255, 255, 255, 0.5);
+            transition: all 0.1s ease;
+        }
+        .squishy-shadow-sm:active {
+            box-shadow: 0px 0px 0px 0px rgba(58, 42, 34, 0.1), inset 0px 2px 4px 0px rgba(58, 42, 34, 0.1);
+            transform: translateY(4px);
+        }
+        .receipt-edge-top {
+            clip-path: polygon(0% 0%, 5% 5%, 10% 0%, 15% 5%, 20% 0%, 25% 5%, 30% 0%, 35% 5%, 40% 0%, 45% 5%, 50% 0%, 55% 5%, 60% 0%, 65% 5%, 70% 0%, 75% 5%, 80% 0%, 85% 5%, 90% 0%, 95% 5%, 100% 0%, 100% 100%, 0% 100%);
+        }
+        .receipt-edge-bottom {
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 95% 95%, 90% 100%, 85% 95%, 80% 100%, 75% 95%, 70% 100%, 65% 95%, 60% 100%, 55% 95%, 50% 100%, 45% 95%, 40% 100%, 35% 95%, 30% 100%, 25% 95%, 20% 100%, 15% 95%, 10% 100%, 5% 95%, 0% 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased h-screen w-screen overflow-hidden flex font-body-md relative">
+<!-- Dimmed Background (Simulated underlying POS screen) -->
+<div class="absolute inset-0 bg-surface/50 backdrop-blur-sm z-10 flex">
+</div>
+<!-- Payment Modal -->
+<div class="relative z-20 m-auto w-[1024px] h-[768px] bg-surface-container-lowest rounded-xl squishy-shadow flex overflow-hidden border border-surface-variant">
+<!-- Left: Order Summary (The Receipt) -->
+<div class="w-[400px] bg-surface-container-lowest border-r-2 border-dashed border-outline-variant flex flex-col h-full relative">
+<div class="absolute top-0 left-0 w-full h-4 bg-surface-container-lowest receipt-edge-top z-10"></div>
+<div class="p-md flex-1 overflow-y-auto mt-4">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-md text-center border-b-2 border-outline-variant pb-base">Order Summary</h2>
+<div class="space-y-md">
+<!-- Item 1 -->
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-sm">
+<span class="font-label-bold text-label-bold text-on-surface-variant bg-surface-variant w-8 h-8 rounded-full flex items-center justify-center">1x</span>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface">Strawberry Mochi</p>
+</div>
+</div>
+<span class="font-label-bold text-label-bold text-on-surface">฿65</span>
+</div>
+<!-- Item 2 -->
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-sm">
+<span class="font-label-bold text-label-bold text-on-surface-variant bg-surface-variant w-8 h-8 rounded-full flex items-center justify-center">2x</span>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface">Matcha Latte</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Iced, Less Sweet</p>
+</div>
+</div>
+<span class="font-label-bold text-label-bold text-on-surface">฿120</span>
+</div>
+<!-- Item 3 -->
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-sm">
+<span class="font-label-bold text-label-bold text-on-surface-variant bg-surface-variant w-8 h-8 rounded-full flex items-center justify-center">1x</span>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface">Classic Croissant</p>
+</div>
+</div>
+<span class="font-label-bold text-label-bold text-on-surface">฿55</span>
+</div>
+</div>
+</div>
+<div class="p-lg bg-primary-container rounded-t-[40px] mt-auto">
+<div class="flex justify-between items-end mb-sm">
+<span class="font-headline-md text-headline-md text-on-primary-container">Total</span>
+<span class="font-display-price text-display-price text-on-primary-container">฿240</span>
+</div>
+<div class="flex justify-between items-center border-t border-on-primary-container/20 pt-sm">
+<span class="font-body-md text-body-md text-on-primary-container/80">4 items</span>
+<span class="font-body-md text-body-md text-on-primary-container/80">Tax Included</span>
+</div>
+</div>
+<div class="absolute bottom-0 left-0 w-full h-4 bg-primary-container receipt-edge-bottom z-10"></div>
+</div>
+<!-- Right: Payment Interface -->
+<div class="flex-1 bg-surface-bright flex flex-col p-lg">
+<!-- Payment Methods -->
+<div class="grid grid-cols-4 gap-md mb-lg">
+<button class="bg-secondary-container text-on-secondary-container rounded-[32px] p-md flex flex-col items-center justify-center gap-sm squishy-shadow-sm border-2 border-secondary">
+<span class="material-symbols-outlined text-[40px]" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="font-label-bold text-label-bold">Cash</span>
+</button>
+<button class="bg-surface-container-highest text-on-surface-variant rounded-[32px] p-md flex flex-col items-center justify-center gap-sm squishy-shadow-sm border-2 border-outline-variant hover:border-primary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[40px]">qr_code_scanner</span>
+<span class="font-label-bold text-label-bold">QR</span>
+</button>
+<button class="bg-surface-container-highest text-on-surface-variant rounded-[32px] p-md flex flex-col items-center justify-center gap-sm squishy-shadow-sm border-2 border-outline-variant hover:border-primary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[40px]">credit_card</span>
+<span class="font-label-bold text-label-bold">Card</span>
+</button>
+<button class="bg-surface-container-highest text-on-surface-variant rounded-[32px] p-md flex flex-col items-center justify-center gap-sm squishy-shadow-sm border-2 border-outline-variant hover:border-primary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[40px]">call_split</span>
+<span class="font-label-bold text-label-bold">Split</span>
+</button>
+</div>
+<!-- Cash Input Area -->
+<div class="flex-1 flex gap-lg">
+<!-- Numpad -->
+<div class="flex-1 grid grid-cols-3 gap-base content-start">
+<!-- Quick Chips -->
+<div class="col-span-3 flex gap-base mb-base">
+<button class="flex-1 bg-tertiary-container text-on-tertiary-container rounded-full py-sm font-label-bold text-label-bold squishy-shadow-sm active:translate-y-1 active:shadow-none transition-all">฿250</button>
+<button class="flex-1 bg-tertiary-container text-on-tertiary-container border-2 border-tertiary rounded-full py-sm font-label-bold text-label-bold squishy-shadow-sm active:translate-y-1 active:shadow-none transition-all">฿300</button>
+<button class="flex-1 bg-tertiary-container text-on-tertiary-container rounded-full py-sm font-label-bold text-label-bold squishy-shadow-sm active:translate-y-1 active:shadow-none transition-all">฿500</button>
+<button class="flex-1 bg-tertiary-container text-on-tertiary-container rounded-full py-sm font-label-bold text-label-bold squishy-shadow-sm active:translate-y-1 active:shadow-none transition-all">฿1000</button>
+</div>
+<!-- Numbers -->
+<button class="bg-surface-container-highest text-on-surface h-16 rounded-[24px] font-headline-lg text-headline-lg squishy-shadow-sm active:translate-y-1 active:shadow-none transition-all">1</button>
+<button class="bg-surface-container-highest text-on-surface h-16 rounded-[24px] font-headline-lg text-headline-lg squishy-shadow-sm active:translate-y-1 active:shadow-none transition-all">2</button>
+<button class="bg-surface-container-highest text-on-surface h-16 rounded-[24px] font-headline-lg text-headline-lg squishy-shadow-sm active:translate-y-1 active:shadow-none transition-all">3</button>
+<button class="bg-surface-container-highest text-on-surface h-16 rounded-[24px] font-headline-lg text-headline-lg squishy-shadow-sm active:translate-y-1 active:shadow-none transition-all">4</button>
+<button class="bg-surface-container-highest text-on-surface h-16 rounded-[24px] font-headline-lg text-headline-lg squishy-shadow-sm active:translate-y-1 active:shadow-none transition-all">5</button>
+<button class="bg-surface-container-highest text-on-surface h-16 rounded-[24px] font-headline-lg text-headline-lg squishy-shadow-sm active:translate-y-1 active:shadow-none transition-all">6</button>
+<button class="bg-surface-container-highest text-on-surface h-16 rounded-[24px] font-headline-lg text-headline-lg squishy-shadow-sm active:translate-y-1 active:shadow-none transition-all">7</button>
+<button class="bg-surface-container-highest text-on-surface h-16 rounded-[24px] font-headline-lg text-headline-lg squishy-shadow-sm active:translate-y-1 active:shadow-none transition-all">8</button>
+<button class="bg-surface-container-highest text-on-surface h-16 rounded-[24px] font-headline-lg text-headline-lg squishy-shadow-sm active:translate-y-1 active:shadow-none transition-all">9</button>
+<button class="bg-surface-variant text-on-surface-variant h-16 rounded-[24px] font-label-bold text-label-bold squishy-shadow-sm active:translate-y-1 active:shadow-none transition-all flex items-center justify-center">
+<span class="material-symbols-outlined">backspace</span>
+</button>
+<button class="bg-surface-container-highest text-on-surface h-16 rounded-[24px] font-headline-lg text-headline-lg squishy-shadow-sm active:translate-y-1 active:shadow-none transition-all">0</button>
+<button class="bg-surface-container-highest text-on-surface h-16 rounded-[24px] font-headline-lg text-headline-lg squishy-shadow-sm active:translate-y-1 active:shadow-none transition-all">00</button>
+</div>
+<!-- Calculation Display -->
+<div class="w-[200px] flex flex-col justify-center gap-lg">
+<div class="bg-surface-container rounded-[32px] p-md border-2 border-outline-variant text-center">
+<p class="font-label-bold text-label-bold text-on-surface-variant mb-xs">Received</p>
+<p class="font-headline-lg text-headline-lg text-primary">฿300</p>
+</div>
+<div class="bg-secondary-container rounded-[32px] p-md border-2 border-secondary text-center squishy-shadow-sm">
+<p class="font-label-bold text-label-bold text-on-secondary-container mb-xs">Change</p>
+<p class="font-headline-lg text-headline-lg text-secondary">฿60</p>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex gap-md mt-lg">
+<button class="w-1/3 bg-surface-container-highest text-on-surface-variant font-headline-md text-headline-md py-md rounded-full squishy-shadow flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined">arrow_back</span>
+                    Back
+                </button>
+<button class="w-2/3 bg-tertiary text-on-tertiary font-headline-md text-headline-md py-md rounded-full squishy-shadow flex items-center justify-center gap-sm">
+                    Complete payment
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>
