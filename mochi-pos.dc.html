@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <script src="./support.js"></script>
 </head>
 <body>
@@ -16,7 +16,7 @@
 html,body{margin:0;padding:0;height:100%}
 *{box-sizing:border-box;scrollbar-width:none}
 ::-webkit-scrollbar{width:0;height:0}
-body{font-family:'Quicksand',sans-serif;background:#fff8f6;color:#261811;-webkit-font-smoothing:antialiased}
+body{font-family:'Quicksand',sans-serif;background:#fff8f6;color:#261811;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;text-size-adjust:100%;touch-action:manipulation;overscroll-behavior-y:contain}
 input,select,button{font-family:'Quicksand',sans-serif}
 button{cursor:pointer}
 input:focus,select:focus{border-color:#ffb88c !important;outline:none}
@@ -30,24 +30,281 @@ a{color:#87512d}a:hover{color:#7a4624}
 @keyframes confettiFall{0%{transform:translateY(-10px) rotate(0deg);opacity:1}100%{transform:translateY(200px) rotate(340deg);opacity:0}}
 @keyframes toastIn{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ==================== RESPONSIVE / MOBILE ==================== */
+/* Every rule below overrides an inline style attribute, so !important is required. */
+
+/* elements that exist only for the mobile layout - hidden by default */
+.m-cat-strip,.m-cartbar,.m-cart-backdrop,.m-cart-close,.m-ord-back{display:none !important}
+.m-cat-chip{flex:0 0 auto;white-space:nowrap}
+/* stop a flick past the end of a sheet from scrolling the page behind it */
+.m-cart-body,.m-drawer-body,.m-pay-body,.m-pay-sum-items,.m-orders-scroll,.m-sales-grid-wrap,.m-scrim,.m-dropdown{overscroll-behavior:contain}
+.m-cat-strip,.m-order-tabs,.m-set-tabs{-webkit-overflow-scrolling:touch}
+/* hover states that read as "selected" must not stick after a tap on touch devices */
+@media (hover:hover) and (pointer:fine){
+ .m-range-chip:hover{border-color:#87512d !important}
+ .m-date-btn:hover{border-color:#87512d !important;color:#87512d !important}
+}
+@media (prefers-reduced-motion:reduce){
+ .m-succ-art span{animation:none !important}
+ .m-cart,.m-cart-backdrop{transition:none !important}
+}
+
+/* ---------- <=1180px : narrow the fixed side panels ---------- */
+@media (max-width:1180px){
+ .m-nav{width:198px !important}
+ .m-cart{width:318px !important}
+ .m-ord-aside{width:316px !important}
+ .m-sales-grid-wrap{padding:18px !important}
+ .m-prod-grid{grid-template-columns:repeat(auto-fill,minmax(152px,1fr)) !important;gap:20px !important}
+ .m-inv,.m-dash,.m-set{padding:18px !important}
+}
+
+/* ---------- <=980px : stack the wide dashboards / two-up panels ---------- */
+@media (max-width:980px){
+ .m-stats{grid-template-columns:repeat(2,1fr) !important}
+ .m-dash-row{grid-template-columns:1fr !important}
+ .m-set-grid{grid-template-columns:176px 1fr !important}
+ .m-receipt-grid{grid-template-columns:1fr !important}
+ .m-search{width:186px !important}
+ .m-pay-sum{width:290px !important}
+}
+
+/* ==================== <=860px : PHONE LAYOUT ==================== */
+@media (max-width:860px){
+ /* -- global -- */
+ input,select,textarea{font-size:16px !important}   /* stops iOS zoom-on-focus */
+ .m-app{height:100dvh !important}
+ .m-login{padding:16px !important;min-height:100svh !important}
+
+ /* -- login -- */
+ .m-login-grid{grid-template-columns:1fr !important;gap:22px !important;max-width:420px !important}
+ .m-login-left{align-items:center !important;text-align:center;gap:16px !important}
+ .m-login-logo{width:112px !important;height:112px !important;border-radius:32px !important}
+ .m-login-h1{font-size:27px !important}
+ .m-login-sub{font-size:15px !important}
+ .m-login-staff{justify-content:center !important;gap:14px !important;padding-top:0 !important}
+ .m-login-av{width:60px !important;height:60px !important;border-width:3px !important}
+ .m-login-card{padding:20px 18px !important;border-radius:34px !important}
+ .m-login-pad{max-width:282px !important;margin:0 auto !important;gap:11px !important}
+
+ /* -- header -- */
+ .m-hdr{height:auto !important;min-height:58px;flex-wrap:wrap !important;padding:8px 12px !important;gap:8px !important;z-index:55 !important}
+ .m-brand-name{font-size:18px !important}
+ .m-pos-chip,.m-sales-badge{display:none !important}
+ .m-hdr-right{flex:1 1 auto;min-width:0;flex-wrap:wrap !important;justify-content:flex-end !important;gap:6px !important}
+ .m-search{order:9 !important;flex:1 0 100% !important;width:100% !important}
+ /* pop-overs become bottom sheets so they can never run off-screen */
+ .m-dropdown{position:fixed !important;top:auto !important;right:10px !important;left:10px !important;
+   bottom:calc(78px + env(safe-area-inset-bottom)) !important;width:auto !important;max-height:56dvh;overflow-y:auto}
+
+ /* -- side nav becomes a bottom tab bar -- */
+ .m-nav{position:fixed !important;left:0 !important;right:0 !important;bottom:0 !important;top:auto !important;
+   width:auto !important;flex-direction:row !important;justify-content:space-around !important;
+   align-items:stretch !important;border-radius:22px 22px 0 0 !important;
+   padding:6px 4px calc(6px + env(safe-area-inset-bottom)) !important;gap:2px !important;
+   box-shadow:0 -4px 16px rgba(58,42,34,.13) !important;z-index:45;overflow:visible !important}
+ .m-nav-cats,.m-nav-label{display:none !important}
+ .m-nav-btn{flex:1 1 0;min-width:0;flex-direction:column !important;gap:2px !important;
+   padding:7px 2px !important;font-size:10px !important;line-height:1.25;text-align:center !important;
+   align-items:center !important;justify-content:center !important;border-radius:16px !important;
+   border-color:transparent !important;box-shadow:none !important}
+ .m-nav-ico{font-size:21px !important}
+
+ /* -- sales -- */
+ .m-sales{flex-direction:column !important}
+ .m-sales-grid-wrap{padding:12px 12px calc(146px + env(safe-area-inset-bottom)) !important}
+ .m-cat-strip{display:flex !important;gap:8px;overflow-x:auto;padding:0 2px 12px}
+ .m-prod-grid{grid-template-columns:repeat(auto-fill,minmax(138px,1fr)) !important;gap:14px !important;padding:2px 6px 0 2px !important}
+ .m-prod-card{border-radius:26px !important;padding:10px 10px 16px !important}
+ .m-sales .m-prod-card:hover{transform:none !important}   /* kill sticky :hover on touch */
+ .m-prod-name{font-size:15px !important}
+ .m-prod-price{width:46px !important;height:46px !important;font-size:12px !important;bottom:-8px !important;right:-2px !important}
+
+ /* cart: sticky summary bar + bottom sheet */
+ .m-cartbar{display:flex !important;position:fixed !important;left:10px;right:10px;
+   bottom:calc(68px + env(safe-area-inset-bottom));z-index:44;align-items:center;gap:10px;
+   border:none;border-radius:9999px;padding:11px 16px;background:#FF6B57;color:#fff;
+   box-shadow:0 6px 0 rgba(186,26,26,.22);text-align:left}
+ .m-cart-backdrop{display:block !important;position:fixed;inset:0;z-index:56;background:rgba(61,45,37,.38);
+   opacity:0;pointer-events:none;transition:opacity .25s ease}
+ .m-cart-backdrop.m-cart-open{opacity:1;pointer-events:auto}
+ .m-cart{position:fixed !important;left:0 !important;right:0 !important;bottom:0 !important;top:auto !important;
+   width:auto !important;height:min(82dvh,660px) !important;z-index:57;
+   border-radius:28px 28px 0 0 !important;box-shadow:0 -10px 30px rgba(58,42,34,.22) !important;
+   transform:translateY(105%);transition:transform .26s cubic-bezier(.32,.72,0,1);will-change:transform}
+ .m-cart.m-cart-open{transform:translateY(0)}
+ .m-cart-zig{display:none !important}
+ .m-cart-head{align-items:center !important;padding:14px 16px 6px !important}
+ .m-cart-close{display:flex !important}
+ .m-cart-body{padding:8px 16px !important;min-height:0 !important}
+ .m-cart-foot{flex:none !important}
+ .m-cart-foot{padding:12px 16px calc(16px + env(safe-area-inset-bottom)) !important}
+ .m-cart-total{font-size:32px !important}
+ .m-qty-btn{width:38px !important;height:38px !important}
+ .m-qty-btn>span{font-size:19px !important}
+
+ /* -- orders -- */
+ .m-orders{flex-direction:column !important;padding:12px 12px 0 !important;gap:12px !important}
+ .m-order-tabs{overflow-x:auto;max-width:100%}
+ .m-order-tabs>button{flex:0 0 auto;white-space:nowrap}
+ .m-orders-scroll{padding-bottom:calc(84px + env(safe-area-inset-bottom)) !important}
+ .m-ord-aside{display:none !important}
+ .m-ord-aside.m-ord-open{display:flex !important;position:fixed !important;inset:0 !important;top:0 !important;
+   width:auto !important;border-radius:0 !important;z-index:58;box-shadow:none !important}
+ .m-ord-detail{padding:16px 16px calc(16px + env(safe-area-inset-bottom)) !important}
+ .m-ord-items{min-height:0 !important}
+ .m-ord-back{display:flex !important}
+ .m-ord-total{font-size:28px !important}
+
+ /* -- inventory -- */
+ .m-inv{padding:14px 14px calc(84px + env(safe-area-inset-bottom)) !important}
+ .m-h1{font-size:22px !important}
+ .m-inv-row{flex-wrap:wrap !important;gap:10px 12px !important;padding:12px !important;border-radius:22px !important}
+ .m-inv-img{width:58px !important;height:58px !important;border-radius:16px !important}
+ .m-inv-info{flex:1 1 calc(100% - 76px) !important}
+ .m-inv-name{font-size:16px !important}
+ .m-inv-price{font-size:20px !important}
+ .m-inv-stock,.m-inv-active{flex-direction:row !important;align-items:center !important;gap:6px !important}
+ .m-inv-edit{margin-left:auto !important;width:40px !important;height:40px !important}
+
+ /* -- dashboard -- */
+ .m-dash{padding:14px 14px calc(84px + env(safe-area-inset-bottom)) !important}
+ .m-dash-h2{font-size:21px !important}
+ .m-dash-sub{font-size:14px !important}
+ .m-dash-av{width:48px !important;height:48px !important}
+ .m-range-chips{flex-wrap:wrap !important}
+ .m-stats{grid-template-columns:repeat(2,1fr) !important;gap:10px !important}
+ .m-stat-card{padding:14px !important;border-radius:22px !important;gap:8px !important}
+ .m-stat-val{font-size:24px !important}
+ .m-chart{min-height:212px !important}
+ .m-dash-close{justify-content:stretch !important}
+ .m-dash-close>button{width:100% !important}
+
+ /* -- settings -- */
+ .m-set{padding:14px 14px calc(84px + env(safe-area-inset-bottom)) !important}
+ .m-set-grid{grid-template-columns:1fr !important;gap:14px !important}
+ .m-set-tabs{flex-direction:row !important;overflow-x:auto;border-radius:9999px !important;padding:8px !important;gap:8px !important}
+ .m-set-tabs>button{flex:0 0 auto;white-space:nowrap}
+ .m-set-cards{grid-template-columns:1fr !important}
+ .m-hours{grid-template-columns:repeat(auto-fit,minmax(92px,1fr)) !important;gap:8px !important}
+ .m-hour-tg{padding:10px 0 !important;font-size:12px !important}
+ .m-staff-row{flex-wrap:wrap !important;gap:8px 10px !important}
+ .m-staff-name{flex:1 1 calc(100% - 62px) !important}
+ .m-staff-del{width:42px !important;height:42px !important}
+ .m-receipt-grid{grid-template-columns:1fr !important}
+ .m-tax-row{flex-wrap:wrap !important}
+ .m-tax-field{width:100% !important}
+ .m-reset{flex-direction:column !important;align-items:stretch !important}
+ .m-reset>button{width:100% !important}
+ .m-set-save{justify-content:stretch !important}
+ .m-set-save>button{width:100% !important}
+
+ /* -- payment modal goes full screen -- */
+ .m-pay-ov{padding:0 !important}
+ .m-pay-panel{width:100% !important;height:100% !important;border-radius:0 !important;
+   flex-direction:column !important;border:none !important;box-shadow:none !important}
+ .m-pay-sum{width:100% !important;flex:none !important;border-right:none !important}
+ .m-pay-sum-h,.m-pay-sum-items{display:none !important}
+ .m-pay-total{border-radius:0 !important;padding:12px 16px !important}
+ .m-pay-total-lbl{font-size:16px !important}
+ .m-pay-total-amt{font-size:30px !important}
+ .m-pay-right{padding:12px !important;min-height:0 !important}
+ .m-pay-body{overflow-y:auto !important}
+ .m-pay-methods{gap:8px !important;margin-bottom:12px !important;flex:none !important}
+ .m-pay-method{padding:10px 4px !important;border-radius:20px !important;gap:4px !important}
+ .m-pay-mico{font-size:24px !important}
+ .m-pay-mlabel{font-size:11px !important}
+ .m-cash-row{flex-direction:column-reverse !important;gap:10px !important}
+ .m-cash-side{width:100% !important;flex:none !important;flex-direction:row !important;gap:10px !important}
+ .m-cash-box{flex:1;padding:10px !important;border-radius:20px !important}
+ .m-cash-amt{font-size:21px !important}
+ .m-pad{gap:6px !important}
+ .m-pad-key{min-height:44px !important;font-size:22px !important;border-radius:18px !important}
+ .m-qr-ico{font-size:104px !important}
+ .m-card-ico{font-size:80px !important}
+ .m-pay-actions{gap:10px !important;margin-top:12px !important;flex:none !important;
+   padding-bottom:env(safe-area-inset-bottom)}
+ .m-pay-back{width:36% !important;font-size:14px !important;padding:13px 0 !important}
+ .m-pay-cta{font-size:15px !important;padding:13px 0 !important}
+ .m-pay-bico,.m-pay-cico{font-size:18px !important}
+
+ /* -- success -- */
+ .m-succ{padding:14px 12px calc(20px + env(safe-area-inset-bottom)) !important;align-items:flex-start !important}
+ .m-succ-main{gap:14px !important}
+ .m-succ-art{width:124px !important;height:124px !important}
+ .m-succ-h1{font-size:24px !important}
+ .m-succ-paid{font-size:32px !important}
+
+ /* -- drawer, modals, toasts -- */
+ .m-drawer{width:100% !important;height:100dvh !important;max-height:100dvh !important}
+ .m-drawer-head{padding:14px 16px !important}
+ .m-drawer-body{padding:16px !important;min-height:0 !important}
+ .m-drawer-foot{padding:14px 16px calc(14px + env(safe-area-inset-bottom)) !important;position:sticky !important;bottom:0 !important}
+ .m-scrim{align-items:flex-start !important;overflow-y:auto !important;padding:16px !important}
+ .m-modal{margin:auto !important}
+ .m-ed-row{flex-wrap:wrap !important;gap:10px !important}
+ .m-ed-col{flex:1 1 100% !important}
+ .m-toast-wrap{bottom:calc(80px + env(safe-area-inset-bottom)) !important;left:12px !important;right:12px !important;
+   transform:none !important;width:auto !important}
+ .m-toast{white-space:normal !important;max-width:100% !important}
+}
+
+/* landscape phones: plenty of width, almost no height - go back to side-by-side */
+@media (max-width:860px) and (max-height:520px) and (orientation:landscape){
+ .m-cash-row{flex-direction:row !important;gap:12px !important}
+ .m-cash-side{width:170px !important;flex-direction:column !important;justify-content:center !important}
+ .m-pay-total{display:flex !important;align-items:center !important;justify-content:space-between !important;gap:16px;padding:6px 14px !important}
+ .m-pay-total>div:first-child{margin-bottom:0 !important;gap:8px}
+ .m-pay-total>div:last-child{border-top:none !important;padding-top:0 !important;gap:12px}
+ .m-cart{height:92dvh !important}
+}
+/* short phones: claw back vertical space in the payment sheet */
+@media (max-width:860px) and (max-height:720px){
+ .m-pay-total{padding:8px 14px !important}
+ .m-pay-total-amt{font-size:25px !important}
+ .m-pay-total-lbl{font-size:14px !important}
+ .m-pay-method{padding:7px 4px !important}
+ .m-pay-mico{font-size:20px !important}
+ .m-pad-key{min-height:40px !important;font-size:19px !important}
+}
+
+/* ---------- <=420px : compact ---------- */
+@media (max-width:420px){
+ .m-brand-name{font-size:16px !important}
+ .m-login-logo{width:92px !important;height:92px !important;border-radius:26px !important}
+ .m-login-h1{font-size:24px !important}
+ .m-login-av{width:54px !important;height:54px !important}
+ .m-prod-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:12px !important}
+ .m-prod-name{font-size:14px !important}
+ .m-prod-price{width:42px !important;height:42px !important;font-size:11px !important}
+ .m-stats{gap:8px !important}
+ .m-stat-card{padding:12px !important}
+ .m-stat-val{font-size:21px !important}
+ .m-hours{grid-template-columns:repeat(2,1fr) !important}
+ .m-cart-total{font-size:28px !important}
+ .m-pay-back{width:40% !important;font-size:13px !important}
+ .m-pay-cta{font-size:13px !important}
+ .m-succ-paid{font-size:28px !important}
+}
 </style>
 </helmet>
 
 <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
-<div data-screen-label="Staff Login" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:#fff8f6">
- <div style="width:100%;max-width:1140px;display:grid;grid-template-columns:1fr 420px;gap:48px;align-items:center">
-  <div style="display:flex;flex-direction:column;gap:26px;align-items:flex-start">
-   <div style="width:176px;height:176px;border-radius:48px;background:#fff1eb;box-shadow:0 8px 0 rgba(58,42,34,.05),inset 0 4px 0 rgba(255,255,255,.8);display:flex;align-items:center;justify-content:center;padding:12px;overflow:hidden">
+<div class="m-login" data-screen-label="Staff Login" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:#fff8f6">
+ <div class="m-login-grid" style="width:100%;max-width:1140px;display:grid;grid-template-columns:1fr 420px;gap:48px;align-items:center">
+  <div class="m-login-left" style="display:flex;flex-direction:column;gap:26px;align-items:flex-start">
+   <div class="m-login-logo" style="width:176px;height:176px;border-radius:48px;background:#fff1eb;box-shadow:0 8px 0 rgba(58,42,34,.05),inset 0 4px 0 rgba(255,255,255,.8);display:flex;align-items:center;justify-content:center;padding:12px;overflow:hidden">
     <img src="{{ imgBrand }}" alt="Mochi logo" style="width:100%;height:100%;object-fit:contain;border-radius:36px">
    </div>
    <div>
-    <h1 style="margin:0;font-size:38px;font-weight:700;color:#87512d;letter-spacing:-.5px">Mochi &amp; Co.</h1>
-    <p style="margin:8px 0 0;font-size:18px;font-weight:600;color:#52443c">Tap your profile to begin.</p>
+    <h1 class="m-login-h1" style="margin:0;font-size:38px;font-weight:700;color:#87512d;letter-spacing:-.5px">Mochi &amp; Co.</h1>
+    <p class="m-login-sub" style="margin:8px 0 0;font-size:18px;font-weight:600;color:#52443c">Tap your profile to begin.</p>
    </div>
-   <div style="display:flex;flex-wrap:wrap;gap:20px;padding-top:6px">
+   <div class="m-login-staff" style="display:flex;flex-wrap:wrap;gap:20px;padding-top:6px">
     <sc-for list="{{ staffList }}" as="s" hint-placeholder-count="5">
      <button onClick="{{ s.onPick }}" style="display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;padding:0">
-      <div style="width:84px;height:84px;border-radius:9999px;overflow:hidden;border:4px solid {{ s.ring }};background:#ffeae0;box-shadow:0 6px 0 rgba(58,42,34,.1),inset 0 2px 0 rgba(255,255,255,.5);transition:border-color .15s">
+      <div class="m-login-av" style="width:84px;height:84px;border-radius:9999px;overflow:hidden;border:4px solid {{ s.ring }};background:#ffeae0;box-shadow:0 6px 0 rgba(58,42,34,.1),inset 0 2px 0 rgba(255,255,255,.5);transition:border-color .15s">
        <img src="{{ s.img }}" alt="{{ s.name }}" style="width:100%;height:100%;object-fit:cover">
       </div>
       <span style="font-size:14px;font-weight:700;color:{{ s.nameColor }}">{{ s.name }}</span>
@@ -55,7 +312,7 @@ a{color:#87512d}a:hover{color:#7a4624}
     </sc-for>
    </div>
   </div>
-  <div style="background:#fff1eb;border-radius:48px;padding:30px;box-shadow:0 8px 0 rgba(58,42,34,.05);border:2px solid #f8ddd1">
+  <div class="m-login-card" style="background:#fff1eb;border-radius:48px;padding:30px;box-shadow:0 8px 0 rgba(58,42,34,.05);border:2px solid #f8ddd1">
    <div style="display:flex;flex-direction:column;align-items:center;gap:22px">
     <h2 style="margin:0;font-size:23px;font-weight:700;color:#87512d">Enter PIN · {{ selStaffName }}</h2>
     <div style="display:flex;gap:20px;animation:{{ pinAnim }}">
@@ -63,7 +320,7 @@ a{color:#87512d}a:hover{color:#7a4624}
       <div style="width:22px;height:22px;border-radius:9999px;background:{{ d.bg }};box-shadow:{{ d.sh }};transition:background .15s"></div>
      </sc-for>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%">
+    <div class="m-login-pad" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%">
      <sc-for list="{{ loginPad }}" as="k" hint-placeholder-count="12">
       <button onClick="{{ k.onTap }}" style="aspect-ratio:1;border-radius:9999px;border:2px solid #f8ddd1;background:{{ k.bg }};color:{{ k.color }};font-size:{{ k.fs }};font-weight:700;box-shadow:0 6px 0 rgba(58,42,34,.1),inset 0 2px 0 rgba(255,255,255,.5)" style-active="transform:translateY(5px);box-shadow:inset 0 4px 8px rgba(58,42,34,.12)">{{ k.t }}</button>
      </sc-for>
@@ -78,21 +335,21 @@ a{color:#87512d}a:hover{color:#7a4624}
 </sc-if>
 
 <sc-if value="{{ isApp }}" hint-placeholder-val="{{ false }}">
-<div style="height:100vh;display:flex;flex-direction:column;overflow:hidden;background:#fff8f6">
- <header style="height:64px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:#fff8f6;box-shadow:0 4px 0 rgba(58,42,34,.08);position:relative;z-index:40">
+<div class="m-app" style="height:100vh;display:flex;flex-direction:column;overflow:hidden;background:#fff8f6">
+ <header class="m-hdr" style="height:64px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:#fff8f6;box-shadow:0 4px 0 rgba(58,42,34,.08);position:relative;z-index:40">
   <div style="display:flex;align-items:center;gap:10px">
    <img src="{{ imgBrand }}" alt="" style="width:40px;height:40px;border-radius:9999px;object-fit:cover">
-   <span style="font-size:22px;font-weight:700;color:#87512d">Mochi &amp; Co.</span>
-   <span style="font-size:11px;font-weight:700;letter-spacing:1px;color:#84746b;background:#ffeae0;border-radius:9999px;padding:4px 10px">POS</span>
+   <span class="m-brand-name" style="font-size:22px;font-weight:700;color:#87512d">Mochi &amp; Co.</span>
+   <span class="m-pos-chip" style="font-size:11px;font-weight:700;letter-spacing:1px;color:#84746b;background:#ffeae0;border-radius:9999px;padding:4px 10px">POS</span>
   </div>
-  <div style="display:flex;align-items:center;gap:10px">
+  <div class="m-hdr-right" style="display:flex;align-items:center;gap:10px">
    <sc-if value="{{ showSearch }}" hint-placeholder-val="{{ false }}">
-    <div style="position:relative;width:250px">
+    <div class="m-search" style="position:relative;width:250px">
      <span style="font-family:'Material Symbols Outlined';font-size:20px;line-height:1;position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#84746b">{{ searchIcon }}</span>
      <input value="{{ q }}" onInput="{{ onSearch }}" placeholder="{{ searchPh }}" style="width:100%;height:44px;border-radius:9999px;border:2px solid #d7c3b8;background:#fff;padding:0 16px 0 42px;font-size:14px;font-weight:600;color:#261811">
     </div>
    </sc-if>
-   <div style="display:flex;align-items:center;gap:8px;background:#ffeae0;border-radius:9999px;padding:4px 14px 4px 4px;box-shadow:0 4px 0 rgba(58,42,34,.08)">
+   <div class="m-sales-badge" style="display:flex;align-items:center;gap:8px;background:#ffeae0;border-radius:9999px;padding:4px 14px 4px 4px;box-shadow:0 4px 0 rgba(58,42,34,.08)">
     <img src="{{ imgMascotSm }}" alt="" style="width:32px;height:32px;border-radius:9999px;object-fit:cover">
     <span style="font-size:13px;font-weight:700;color:#261811">Sales: {{ todayCount }}</span>
    </div>
@@ -104,7 +361,7 @@ a{color:#87512d}a:hover{color:#7a4624}
      <span style="position:absolute;top:6px;right:8px;width:10px;height:10px;border-radius:9999px;background:#ba1a1a;border:2px solid #fff8f6;pointer-events:none"></span>
     </sc-if>
     <sc-if value="{{ notifOpen }}" hint-placeholder-val="{{ false }}">
-     <div style="position:absolute;right:0;top:52px;width:320px;background:#fff;border-radius:24px;border:2px solid #f8ddd1;box-shadow:0 10px 0 rgba(58,42,34,.08);padding:14px;z-index:50;animation:popIn .2s ease">
+     <div class="m-dropdown" style="position:absolute;right:0;top:52px;width:320px;background:#fff;border-radius:24px;border:2px solid #f8ddd1;box-shadow:0 10px 0 rgba(58,42,34,.08);padding:14px;z-index:50;animation:popIn .2s ease">
       <div style="font-size:14px;font-weight:700;color:#87512d;padding:2px 8px 10px">Notifications</div>
       <sc-if value="{{ notifEmpty }}" hint-placeholder-val="{{ false }}">
        <div style="font-size:13px;font-weight:600;color:#84746b;padding:4px 8px 8px">All good — nothing needs attention.</div>
@@ -124,7 +381,7 @@ a{color:#87512d}a:hover{color:#7a4624}
      <span style="font-size:14px;font-weight:700;color:#261811">{{ userName }}</span>
     </button>
     <sc-if value="{{ acctOpen }}" hint-placeholder-val="{{ false }}">
-     <div style="position:absolute;right:0;top:52px;width:220px;background:#fff;border-radius:24px;border:2px solid #f8ddd1;box-shadow:0 10px 0 rgba(58,42,34,.08);padding:10px;z-index:50;animation:popIn .2s ease;display:flex;flex-direction:column;gap:4px">
+     <div class="m-dropdown" style="position:absolute;right:0;top:52px;width:220px;background:#fff;border-radius:24px;border:2px solid #f8ddd1;box-shadow:0 10px 0 rgba(58,42,34,.08);padding:10px;z-index:50;animation:popIn .2s ease;display:flex;flex-direction:column;gap:4px">
       <button onClick="{{ onSwitchUser }}" style="display:flex;align-items:center;gap:10px;border:none;background:transparent;border-radius:14px;padding:10px 12px;font-size:14px;font-weight:700;color:#261811;text-align:left" style-hover="background:#fff1eb">
        <span style="font-family:'Material Symbols Outlined';font-size:20px;line-height:1;color:#87512d">switch_account</span>Switch user
       </button>
@@ -137,39 +394,46 @@ a{color:#87512d}a:hover{color:#7a4624}
   </div>
  </header>
  <div style="flex:1;display:flex;min-height:0">
-  <nav style="width:236px;flex:none;background:#fff1eb;border-radius:0 32px 32px 0;box-shadow:4px 0 0 rgba(58,42,34,.05);padding:18px 14px;display:flex;flex-direction:column;gap:8px;overflow-y:auto">
+  <nav class="m-nav" style="width:236px;flex:none;background:#fff1eb;border-radius:0 32px 32px 0;box-shadow:4px 0 0 rgba(58,42,34,.05);padding:18px 14px;display:flex;flex-direction:column;gap:8px;overflow-y:auto">
    <sc-if value="{{ isSales }}" hint-placeholder-val="{{ true }}">
-    <div style="padding:0 8px 6px">
+    <div class="m-nav-cats" style="padding:0 8px 6px">
      <div style="font-size:20px;font-weight:700;color:#87512d">Categories</div>
      <div style="font-size:13px;font-weight:600;color:#84746b">Fresh daily</div>
     </div>
     <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
-     <button onClick="{{ c.onPick }}" style="display:flex;align-items:center;gap:10px;border-radius:9999px;padding:12px 16px;border:2px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};font-size:14px;font-weight:700;box-shadow:{{ c.sh }};text-align:left" style-active="transform:scale(.96)">
+     <button class="m-nav-cats m-nav-btn" onClick="{{ c.onPick }}" style="display:flex;align-items:center;gap:10px;border-radius:9999px;padding:12px 16px;border:2px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};font-size:14px;font-weight:700;box-shadow:{{ c.sh }};text-align:left" style-active="transform:scale(.96)">
       <span style="font-family:'Material Symbols Outlined';font-size:22px;line-height:1;font-variation-settings:'FILL' {{ c.fill }}">{{ c.icon }}</span>{{ c.label }}
      </button>
     </sc-for>
-    <div style="height:2px;background:#f8ddd1;border-radius:2px;margin:12px 8px"></div>
+    <div class="m-nav-cats" style="height:2px;background:#f8ddd1;border-radius:2px;margin:12px 8px"></div>
    </sc-if>
-   <div style="padding:0 8px 4px;font-size:11px;font-weight:700;letter-spacing:1.5px;color:#84746b">MENU</div>
+   <div class="m-nav-label" style="padding:0 8px 4px;font-size:11px;font-weight:700;letter-spacing:1.5px;color:#84746b">MENU</div>
    <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
-    <button onClick="{{ n.onPick }}" style="display:flex;align-items:center;gap:10px;border-radius:9999px;padding:12px 16px;border:2px solid {{ n.bd }};background:{{ n.bg }};color:{{ n.fg }};font-size:14px;font-weight:700;box-shadow:{{ n.sh }};text-align:left" style-active="transform:scale(.96)">
-     <span style="font-family:'Material Symbols Outlined';font-size:22px;line-height:1;font-variation-settings:'FILL' {{ n.fill }}">{{ n.icon }}</span>{{ n.label }}
+    <button class="m-nav-btn" onClick="{{ n.onPick }}" style="display:flex;align-items:center;gap:10px;border-radius:9999px;padding:12px 16px;border:2px solid {{ n.bd }};background:{{ n.bg }};color:{{ n.fg }};font-size:14px;font-weight:700;box-shadow:{{ n.sh }};text-align:left" style-active="transform:scale(.96)">
+     <span class="m-nav-ico" style="font-family:'Material Symbols Outlined';font-size:22px;line-height:1;font-variation-settings:'FILL' {{ n.fill }}">{{ n.icon }}</span>{{ n.label }}
     </button>
    </sc-for>
   </nav>
 
   <sc-if value="{{ isSales }}" hint-placeholder-val="{{ true }}">
-  <main data-screen-label="Sales" style="flex:1;display:flex;min-width:0;min-height:0">
-   <div style="flex:1;overflow-y:auto;padding:26px">
+  <main class="m-sales" data-screen-label="Sales" style="flex:1;display:flex;min-width:0;min-height:0">
+   <div class="m-sales-grid-wrap" style="flex:1;overflow-y:auto;padding:26px">
+    <div class="m-cat-strip">
+     <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
+      <button class="m-cat-chip" onClick="{{ c.onPick }}" style="display:flex;align-items:center;gap:6px;border-radius:9999px;padding:9px 15px;border:2px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};font-size:13px;font-weight:700;box-shadow:{{ c.sh }}" style-active="transform:scale(.96)">
+       <span style="font-family:'Material Symbols Outlined';font-size:18px;line-height:1;font-variation-settings:'FILL' {{ c.fill }}">{{ c.icon }}</span>{{ c.label }}
+      </button>
+     </sc-for>
+    </div>
     <sc-if value="{{ gridEmpty }}" hint-placeholder-val="{{ false }}">
      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:60px 0;color:#84746b">
       <span style="font-family:'Material Symbols Outlined';font-size:44px;line-height:1">search_off</span>
       <span style="font-size:15px;font-weight:700">No products match your search</span>
      </div>
     </sc-if>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:26px;padding:2px 6px 40px 2px">
+    <div class="m-prod-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:26px;padding:2px 6px 40px 2px">
      <sc-for list="{{ gridProducts }}" as="p" hint-placeholder-count="8">
-      <button onClick="{{ p.onAdd }}" style="position:relative;background:#fff;border:none;border-radius:34px;padding:14px 14px 20px;display:flex;flex-direction:column;align-items:center;box-shadow:0 8px 0 rgba(58,42,34,.1),inset 0 2px 0 rgba(255,255,255,.5);opacity:{{ p.op }}" style-hover="transform:translateY(-2px)" style-active="transform:translateY(5px);box-shadow:inset 0 4px 8px rgba(58,42,34,.12)">
+      <button class="m-prod-card" onClick="{{ p.onAdd }}" style="position:relative;background:#fff;border:none;border-radius:34px;padding:14px 14px 20px;display:flex;flex-direction:column;align-items:center;box-shadow:0 8px 0 rgba(58,42,34,.1),inset 0 2px 0 rgba(255,255,255,.5);opacity:{{ p.op }}" style-hover="transform:translateY(-2px)" style-active="transform:translateY(5px);box-shadow:inset 0 4px 8px rgba(58,42,34,.12)">
        <div style="width:100%;aspect-ratio:1;border-radius:22px;background:#ffeae0;overflow:hidden;margin-bottom:12px;position:relative">
         <img src="{{ p.img }}" alt="{{ p.name }}" style="width:100%;height:100%;object-fit:cover">
         <sc-if value="{{ p.low }}" hint-placeholder-val="{{ false }}">
@@ -181,22 +445,32 @@ a{color:#87512d}a:hover{color:#7a4624}
          </div>
         </sc-if>
        </div>
-       <span style="font-size:16px;font-weight:700;color:#261811;text-align:center;text-wrap:pretty">{{ p.name }}</span>
+       <span class="m-prod-name" style="font-size:16px;font-weight:700;color:#261811;text-align:center;text-wrap:pretty">{{ p.name }}</span>
        <span style="font-size:12px;font-weight:600;color:#84746b;margin-top:2px">{{ p.cat }}</span>
-       <div style="position:absolute;bottom:-10px;right:-6px;width:54px;height:54px;border-radius:9999px;background:#87512d;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;box-shadow:0 6px 0 rgba(58,42,34,.15)">{{ p.priceStr }}</div>
+       <div class="m-prod-price" style="position:absolute;bottom:-10px;right:-6px;width:54px;height:54px;border-radius:9999px;background:#87512d;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;box-shadow:0 6px 0 rgba(58,42,34,.15)">{{ p.priceStr }}</div>
       </button>
      </sc-for>
     </div>
    </div>
-   <div style="width:376px;flex:none;background:#fff;box-shadow:-8px 0 16px rgba(58,42,34,.05);display:flex;flex-direction:column;position:relative;min-height:0">
-    <svg viewBox="0 0 100 8" preserveAspectRatio="none" style="position:absolute;top:-1px;left:0;width:100%;height:10px;display:block;pointer-events:none">
+   <button class="m-cartbar" onClick="{{ mToggleCart }}">
+    <span style="font-family:'Material Symbols Outlined';font-size:22px;line-height:1;font-variation-settings:'FILL' 1">shopping_basket</span>
+    <span style="flex:1;min-width:0;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ mCartBarLabel }}</span>
+    <span style="font-size:17px;font-weight:700;white-space:nowrap">{{ totalStr }}</span>
+    <span style="font-family:'Material Symbols Outlined';font-size:22px;line-height:1">expand_less</span>
+   </button>
+   <div class="m-cart-backdrop {{ mCartCls }}" onClick="{{ mCloseCart }}"></div>
+   <div class="m-cart {{ mCartCls }}" style="width:376px;flex:none;background:#fff;box-shadow:-8px 0 16px rgba(58,42,34,.05);display:flex;flex-direction:column;position:relative;min-height:0">
+    <svg class="m-cart-zig" viewBox="0 0 100 8" preserveAspectRatio="none" style="position:absolute;top:-1px;left:0;width:100%;height:10px;display:block;pointer-events:none">
      <polygon fill="#fff8f6" points="0,0 100,0 100,1 95,8 90,1 85,8 80,1 75,8 70,1 65,8 60,1 55,8 50,1 45,8 40,1 35,8 30,1 25,8 20,1 15,8 10,1 5,8 0,1"></polygon>
     </svg>
-    <div style="padding:24px 20px 6px;display:flex;align-items:baseline;justify-content:space-between">
+    <div class="m-cart-head" style="padding:24px 20px 6px;display:flex;align-items:baseline;justify-content:space-between;gap:10px">
      <span style="font-size:18px;font-weight:700;color:#261811">Current Order</span>
-     <span style="font-size:12px;font-weight:700;color:#84746b">{{ nextNoStr }} · {{ userName }}</span>
+     <span style="flex:1;min-width:0;text-align:right;font-size:12px;font-weight:700;color:#84746b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ nextNoStr }} · {{ userName }}</span>
+     <button class="m-cart-close" onClick="{{ mCloseCart }}" style="flex:none;width:36px;height:36px;border-radius:9999px;border:none;background:#fff1eb;color:#87512d;align-items:center;justify-content:center" style-active="transform:translateY(2px)">
+      <span style="font-family:'Material Symbols Outlined';font-size:22px;line-height:1">expand_more</span>
+     </button>
     </div>
-    <div style="flex:1;overflow-y:auto;padding:10px 20px;display:flex;flex-direction:column;gap:10px">
+    <div class="m-cart-body" style="flex:1;overflow-y:auto;padding:10px 20px;display:flex;flex-direction:column;gap:10px">
      <sc-if value="{{ cartEmpty }}" hint-placeholder-val="{{ true }}">
       <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:30px 0;text-align:center">
        <img src="{{ imgMascotSm }}" alt="" style="width:72px;height:72px;border-radius:9999px;object-fit:cover;opacity:.85">
@@ -211,11 +485,11 @@ a{color:#87512d}a:hover{color:#7a4624}
         <div style="font-size:12px;font-weight:600;color:#84746b">{{ ci.meta }}</div>
        </div>
        <div style="display:flex;align-items:center;gap:6px;background:#ffeae0;border-radius:9999px;padding:3px">
-        <button onClick="{{ ci.onDec }}" style="width:30px;height:30px;border-radius:9999px;border:none;background:#fff;color:#87512d;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 0 rgba(58,42,34,.12)" style-active="transform:translateY(2px);box-shadow:none">
+        <button class="m-qty-btn" onClick="{{ ci.onDec }}" style="width:30px;height:30px;border-radius:9999px;border:none;background:#fff;color:#87512d;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 0 rgba(58,42,34,.12)" style-active="transform:translateY(2px);box-shadow:none">
          <span style="font-family:'Material Symbols Outlined';font-size:16px;line-height:1">remove</span>
         </button>
         <span style="width:20px;text-align:center;font-size:14px;font-weight:700">{{ ci.qty }}</span>
-        <button onClick="{{ ci.onInc }}" style="width:30px;height:30px;border-radius:9999px;border:none;background:#fff;color:#87512d;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 0 rgba(58,42,34,.12)" style-active="transform:translateY(2px);box-shadow:none">
+        <button class="m-qty-btn" onClick="{{ ci.onInc }}" style="width:30px;height:30px;border-radius:9999px;border:none;background:#fff;color:#87512d;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 0 rgba(58,42,34,.12)" style-active="transform:translateY(2px);box-shadow:none">
          <span style="font-family:'Material Symbols Outlined';font-size:16px;line-height:1">add</span>
         </button>
        </div>
@@ -223,13 +497,13 @@ a{color:#87512d}a:hover{color:#7a4624}
       </div>
      </sc-for>
     </div>
-    <div style="padding:16px 20px 20px;border-top:2px dashed #d7c3b8">
+    <div class="m-cart-foot" style="padding:16px 20px 20px;border-top:2px dashed #d7c3b8">
      <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:600;color:#52443c;margin-bottom:6px"><span>Subtotal</span><span>{{ subStr }}</span></div>
      <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:600;color:#ba1a1a;margin-bottom:6px"><span>{{ discLabel }}</span><span>−{{ discStr }}</span></div>
      <div style="font-size:12px;font-weight:600;color:#84746b;margin-bottom:8px">{{ taxNote }}</div>
      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin:6px 0 16px">
       <span style="font-size:22px;font-weight:700;color:#261811">Total</span>
-      <span style="font-size:40px;font-weight:700;letter-spacing:-1px;color:#87512d;line-height:1">{{ totalStr }}</span>
+      <span class="m-cart-total" style="font-size:40px;font-weight:700;letter-spacing:-1px;color:#87512d;line-height:1">{{ totalStr }}</span>
      </div>
      <div style="display:flex;gap:10px;margin-bottom:10px">
       <button onClick="{{ onHold }}" style="flex:1;border:none;border-radius:9999px;padding:11px 0;background:#ffeae0;color:#87512d;font-size:14px;font-weight:700;box-shadow:0 4px 0 rgba(58,42,34,.1)" style-active="transform:translateY(3px);box-shadow:none">Hold</button>
@@ -243,19 +517,19 @@ a{color:#87512d}a:hover{color:#7a4624}
   </sc-if>
 
   <sc-if value="{{ isOrders }}" hint-placeholder-val="{{ false }}">
-  <main data-screen-label="Orders" style="flex:1;display:flex;gap:22px;padding:22px;min-width:0;min-height:0">
+  <main class="m-orders" data-screen-label="Orders" style="flex:1;display:flex;gap:22px;padding:22px;min-width:0;min-height:0">
    <section style="flex:1;display:flex;flex-direction:column;gap:14px;min-width:0">
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
-     <div style="display:flex;gap:6px;background:#fff1eb;border-radius:9999px;padding:6px;box-shadow:0 4px 0 rgba(58,42,34,.06)">
+     <div class="m-order-tabs" style="display:flex;gap:6px;background:#fff1eb;border-radius:9999px;padding:6px;box-shadow:0 4px 0 rgba(58,42,34,.06)">
       <sc-for list="{{ orderTabs }}" as="t" hint-placeholder-count="3">
        <button onClick="{{ t.onPick }}" style="border:none;border-radius:9999px;padding:10px 18px;font-size:14px;font-weight:700;background:{{ t.bg }};color:{{ t.fg }};box-shadow:{{ t.sh }}">{{ t.label }}</button>
       </sc-for>
      </div>
-     <button onClick="{{ toggleOrdersDate }}" style="display:flex;align-items:center;gap:6px;border:2px solid #d7c3b8;border-radius:9999px;padding:10px 16px;background:#fff;color:#52443c;font-size:13px;font-weight:700" style-hover="border-color:#87512d;color:#87512d">
+     <button class="m-date-btn" onClick="{{ toggleOrdersDate }}" style="display:flex;align-items:center;gap:6px;border:2px solid #d7c3b8;border-radius:9999px;padding:10px 16px;background:#fff;color:#52443c;font-size:13px;font-weight:700">
       <span style="font-family:'Material Symbols Outlined';font-size:18px;line-height:1">calendar_today</span>{{ ordersDateLabel }}
      </button>
     </div>
-    <div style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:2px 6px 24px 2px">
+    <div class="m-orders-scroll" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:2px 6px 24px 2px">
      <sc-if value="{{ ordersEmpty }}" hint-placeholder-val="{{ false }}">
       <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:60px 0;color:#84746b">
        <span style="font-family:'Material Symbols Outlined';font-size:44px;line-height:1">receipt_long</span>
@@ -281,7 +555,7 @@ a{color:#87512d}a:hover{color:#7a4624}
      </sc-for>
     </div>
    </section>
-   <aside style="width:370px;flex:none;background:#fff;border-radius:28px;box-shadow:0 8px 0 rgba(58,42,34,.06);display:flex;flex-direction:column;overflow:hidden;min-height:0">
+   <aside class="m-ord-aside {{ mOrdAsideCls }}" style="width:370px;flex:none;background:#fff;border-radius:28px;box-shadow:0 8px 0 rgba(58,42,34,.06);display:flex;flex-direction:column;overflow:hidden;min-height:0">
     <sc-if value="{{ noSel }}" hint-placeholder-val="{{ false }}">
      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#84746b">
       <span style="font-family:'Material Symbols Outlined';font-size:44px;line-height:1">receipt</span>
@@ -289,15 +563,20 @@ a{color:#87512d}a:hover{color:#7a4624}
      </div>
     </sc-if>
     <sc-if value="{{ hasSel }}" hint-placeholder-val="{{ false }}">
-     <div style="padding:22px;display:flex;flex-direction:column;height:100%;min-height:0">
+     <div class="m-ord-detail" style="padding:22px;display:flex;flex-direction:column;height:100%;min-height:0">
       <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:2px solid rgba(215,195,184,.4)">
-       <h2 style="margin:0;font-size:24px;font-weight:700;color:#261811">Order {{ selNoStr }}</h2>
+       <div style="display:flex;align-items:center;gap:8px;min-width:0">
+        <button class="m-ord-back" onClick="{{ mCloseOrder }}" style="flex:none;width:38px;height:38px;border-radius:9999px;border:none;background:#fff1eb;color:#87512d;align-items:center;justify-content:center" style-active="transform:translateY(2px)">
+         <span style="font-family:'Material Symbols Outlined';font-size:22px;line-height:1">arrow_back</span>
+        </button>
+        <h2 style="margin:0;font-size:24px;font-weight:700;color:#261811">Order {{ selNoStr }}</h2>
+       </div>
        <span style="display:flex;align-items:center;gap:4px;border-radius:9999px;padding:5px 12px;font-size:12px;font-weight:700;background:{{ selStBg }};color:{{ selStFg }}">
         <span style="font-family:'Material Symbols Outlined';font-size:14px;line-height:1;font-variation-settings:'FILL' 1">{{ selStIcon }}</span>{{ selStLabel }}
        </span>
       </div>
       <div style="font-size:13px;font-weight:600;color:#84746b;padding:10px 0 4px">{{ selMeta }}</div>
-      <div style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:10px 0">
+      <div class="m-ord-items" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:10px 0">
        <sc-for list="{{ selItems }}" as="it" hint-placeholder-count="2">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
          <div style="display:flex;align-items:center;gap:10px;min-width:0">
@@ -318,7 +597,7 @@ a{color:#87512d}a:hover{color:#7a4624}
        </sc-if>
        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin:8px 0 16px">
         <span style="font-size:18px;font-weight:700;color:#261811">Total</span>
-        <span style="font-size:34px;font-weight:700;letter-spacing:-1px;color:#87512d;line-height:1">{{ selTotalStr }}</span>
+        <span class="m-ord-total" style="font-size:34px;font-weight:700;letter-spacing:-1px;color:#87512d;line-height:1">{{ selTotalStr }}</span>
        </div>
        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
         <sc-if value="{{ selIsHeld }}" hint-placeholder-val="{{ false }}">
@@ -352,11 +631,11 @@ a{color:#87512d}a:hover{color:#7a4624}
   </sc-if>
 
   <sc-if value="{{ isInventory }}" hint-placeholder-val="{{ false }}">
-  <main data-screen-label="Products &amp; Inventory" style="flex:1;overflow-y:auto;padding:26px">
+  <main class="m-inv" data-screen-label="Products &amp; Inventory" style="flex:1;overflow-y:auto;padding:26px">
    <div style="max-width:960px;margin:0 auto">
     <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:22px;gap:14px;flex-wrap:wrap">
      <div>
-      <h1 style="margin:0;font-size:28px;font-weight:700;color:#87512d">Products &amp; Inventory</h1>
+      <h1 class="m-h1" style="margin:0;font-size:28px;font-weight:700;color:#87512d">Products &amp; Inventory</h1>
       <p style="margin:4px 0 0;font-size:15px;font-weight:600;color:#52443c">Manage your sweet offerings</p>
      </div>
      <button onClick="{{ openAdd }}" style="display:flex;align-items:center;gap:8px;border:none;border-radius:9999px;padding:13px 24px;background:#87512d;color:#fff;font-size:14px;font-weight:700;box-shadow:0 6px 0 rgba(58,42,34,.15),inset 0 2px 0 rgba(255,255,255,.25)" style-active="transform:translateY(4px);box-shadow:none">
@@ -365,29 +644,29 @@ a{color:#87512d}a:hover{color:#7a4624}
     </div>
     <div style="display:flex;flex-direction:column;gap:14px;padding-bottom:30px">
      <sc-for list="{{ invRows }}" as="r" hint-placeholder-count="5">
-      <div style="background:#fff;border:2px solid #fee3d6;border-radius:28px;padding:14px 18px;display:flex;align-items:center;gap:18px;box-shadow:0 4px 0 rgba(58,42,34,.05);opacity:{{ r.op }}">
-       <img src="{{ r.img }}" alt="{{ r.name }}" style="width:74px;height:74px;border-radius:20px;object-fit:cover;background:#ffeae0;flex:none">
-       <div style="flex:1;min-width:0">
+      <div class="m-inv-row" style="background:#fff;border:2px solid #fee3d6;border-radius:28px;padding:14px 18px;display:flex;align-items:center;gap:18px;box-shadow:0 4px 0 rgba(58,42,34,.05);opacity:{{ r.op }}">
+       <img class="m-inv-img" src="{{ r.img }}" alt="{{ r.name }}" style="width:74px;height:74px;border-radius:20px;object-fit:cover;background:#ffeae0;flex:none">
+       <div class="m-inv-info" style="flex:1;min-width:0">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap">
-         <span style="font-size:19px;font-weight:700;color:#261811">{{ r.name }}</span>
+         <span class="m-inv-name" style="font-size:19px;font-weight:700;color:#261811">{{ r.name }}</span>
          <span style="background:#fee3d6;color:#52443c;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;border-radius:9999px;padding:4px 10px">{{ r.cat }}</span>
         </div>
-        <div style="font-size:24px;font-weight:700;letter-spacing:-.5px;color:#87512d">{{ r.priceStr }}</div>
+        <div class="m-inv-price" style="font-size:24px;font-weight:700;letter-spacing:-.5px;color:#87512d">{{ r.priceStr }}</div>
        </div>
-       <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+       <div class="m-inv-stock" style="display:flex;flex-direction:column;align-items:center;gap:4px">
         <span style="font-size:12px;font-weight:700;color:#84746b">Stock</span>
         <span style="display:flex;align-items:center;gap:4px;background:{{ r.stockBg }};color:{{ r.stockFg }};font-size:12px;font-weight:700;border-radius:9999px;padding:5px 12px">
          <sc-if value="{{ r.showWarn }}" hint-placeholder-val="{{ false }}"><span style="font-family:'Material Symbols Outlined';font-size:14px;line-height:1">warning</span></sc-if>
          {{ r.stockLabel }}
         </span>
        </div>
-       <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+       <div class="m-inv-active" style="display:flex;flex-direction:column;align-items:center;gap:4px">
         <span style="font-size:12px;font-weight:700;color:#84746b">Active</span>
         <button onClick="{{ r.onToggle }}" style="width:52px;height:30px;border-radius:9999px;border:none;background:{{ r.tgBg }};position:relative;box-shadow:inset 0 2px 4px rgba(58,42,34,.15);transition:background .15s">
          <span style="position:absolute;top:3px;left:{{ r.knobLeft }};width:24px;height:24px;border-radius:9999px;background:#fff;box-shadow:0 2px 4px rgba(58,42,34,.2);transition:left .15s"></span>
         </button>
        </div>
-       <button onClick="{{ r.onEdit }}" style="width:44px;height:44px;border-radius:9999px;border:none;background:transparent;color:#84746b;display:flex;align-items:center;justify-content:center" style-hover="background:#ffeae0;color:#87512d">
+       <button class="m-inv-edit" onClick="{{ r.onEdit }}" style="width:44px;height:44px;border-radius:9999px;border:none;background:transparent;color:#84746b;display:flex;align-items:center;justify-content:center" style-hover="background:#ffeae0;color:#87512d">
         <span style="font-family:'Material Symbols Outlined';font-size:22px;line-height:1">edit</span>
        </button>
       </div>
@@ -398,30 +677,30 @@ a{color:#87512d}a:hover{color:#7a4624}
   </sc-if>
 
   <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ false }}">
-  <main data-screen-label="Dashboard" style="flex:1;overflow-y:auto;padding:26px">
+  <main class="m-dash" data-screen-label="Dashboard" style="flex:1;overflow-y:auto;padding:26px">
    <div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:20px;padding-bottom:30px">
     <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap">
      <div style="display:flex;align-items:center;gap:16px">
-      <img src="{{ imgWave }}" alt="" style="width:64px;height:64px;border-radius:9999px;object-fit:cover;background:#ffdbc8;box-shadow:0 4px 0 rgba(58,42,34,.08)">
+      <img class="m-dash-av" src="{{ imgWave }}" alt="" style="width:64px;height:64px;border-radius:9999px;object-fit:cover;background:#ffdbc8;box-shadow:0 4px 0 rgba(58,42,34,.08)">
       <div>
-       <h2 style="margin:0;font-size:28px;font-weight:700;color:#261811">{{ greet }}, {{ userName }}</h2>
-       <p style="margin:4px 0 0;font-size:16px;font-weight:600;color:#52443c">Here's how the bakery is doing.</p>
+       <h2 class="m-dash-h2" style="margin:0;font-size:28px;font-weight:700;color:#261811">{{ greet }}, {{ userName }}</h2>
+       <p class="m-dash-sub" style="margin:4px 0 0;font-size:16px;font-weight:600;color:#52443c">Here's how the bakery is doing.</p>
       </div>
      </div>
-     <div style="display:flex;gap:8px">
+     <div class="m-range-chips" style="display:flex;gap:8px;flex-wrap:wrap">
       <sc-for list="{{ rangeChips }}" as="rc" hint-placeholder-count="3">
-       <button onClick="{{ rc.onPick }}" style="border:2px solid {{ rc.bd }};border-radius:9999px;padding:10px 18px;background:{{ rc.bg }};color:{{ rc.fg }};font-size:13px;font-weight:700" style-hover="border-color:#87512d">{{ rc.label }}</button>
+       <button class="m-range-chip" onClick="{{ rc.onPick }}" style="border:2px solid {{ rc.bd }};border-radius:9999px;padding:10px 18px;background:{{ rc.bg }};color:{{ rc.fg }};font-size:13px;font-weight:700">{{ rc.label }}</button>
       </sc-for>
      </div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+    <div class="m-stats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
      <sc-for list="{{ statCards }}" as="st" hint-placeholder-count="4">
-      <div style="background:#fff;border-radius:28px;padding:18px;box-shadow:0 4px 0 rgba(58,42,34,.05),inset 0 1px 0 rgba(255,255,255,.8);display:flex;flex-direction:column;gap:12px">
+      <div class="m-stat-card" style="background:#fff;border-radius:28px;padding:18px;box-shadow:0 4px 0 rgba(58,42,34,.05),inset 0 1px 0 rgba(255,255,255,.8);display:flex;flex-direction:column;gap:12px">
        <div style="display:flex;align-items:center;gap:8px">
         <span style="font-family:'Material Symbols Outlined';font-size:20px;line-height:1;color:{{ st.iconFg }};background:{{ st.iconBg }};border-radius:9999px;padding:8px">{{ st.icon }}</span>
         <span style="font-size:13px;font-weight:700;color:#52443c">{{ st.label }}</span>
        </div>
-       <div style="font-size:34px;font-weight:700;letter-spacing:-1px;color:#261811;line-height:1">{{ st.value }}</div>
+       <div class="m-stat-val" style="font-size:34px;font-weight:700;letter-spacing:-1px;color:#261811;line-height:1">{{ st.value }}</div>
        <div style="display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:{{ st.noteColor }}">
         <sc-if value="{{ st.hasNoteIcon }}" hint-placeholder-val="{{ false }}"><span style="font-family:'Material Symbols Outlined';font-size:16px;line-height:1">{{ st.noteIcon }}</span></sc-if>
         {{ st.note }}
@@ -429,10 +708,10 @@ a{color:#87512d}a:hover{color:#7a4624}
       </div>
      </sc-for>
     </div>
-    <div style="display:grid;grid-template-columns:2fr 1fr;gap:14px;align-items:stretch">
+    <div class="m-dash-row" style="display:grid;grid-template-columns:2fr 1fr;gap:14px;align-items:stretch">
      <div style="background:#fff;border-radius:28px;padding:20px;box-shadow:0 4px 0 rgba(58,42,34,.05),inset 0 1px 0 rgba(255,255,255,.8);display:flex;flex-direction:column">
       <h3 style="margin:0 0 16px;font-size:20px;font-weight:700;color:#261811">{{ chartTitle }}</h3>
-      <div style="flex:1;position:relative;min-height:280px">
+      <div class="m-chart" style="flex:1;position:relative;min-height:280px">
        <div style="position:absolute;left:0;top:0;bottom:24px;display:flex;flex-direction:column;justify-content:space-between;font-size:11px;font-weight:700;color:#84746b;text-align:right;width:44px">
         <sc-for list="{{ yLabels }}" as="y" hint-placeholder-count="5"><span>{{ y }}</span></sc-for>
        </div>
@@ -484,7 +763,7 @@ a{color:#87512d}a:hover{color:#7a4624}
       <button onClick="{{ goInventory }}" style="margin-top:16px;width:100%;border:none;border-radius:9999px;padding:12px;background:#fff1eb;color:#87512d;font-size:13px;font-weight:700" style-hover="background:#ffdbc8">View All Inventory</button>
      </div>
     </div>
-    <div style="display:flex;justify-content:flex-end">
+    <div class="m-dash-close" style="display:flex;justify-content:flex-end">
      <button onClick="{{ onCloseShift }}" style="display:flex;align-items:center;gap:8px;border:none;border-radius:9999px;padding:15px 32px;background:#87512d;color:#fff;font-size:16px;font-weight:700;box-shadow:0 8px 0 rgba(58,42,34,.15),inset 0 2px 0 rgba(255,255,255,.25)" style-active="transform:translateY(5px);box-shadow:none">
       <span style="font-family:'Material Symbols Outlined';font-size:22px;line-height:1">lock_clock</span>Close Shift
      </button>
@@ -494,9 +773,9 @@ a{color:#87512d}a:hover{color:#7a4624}
   </sc-if>
 
   <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
-  <main data-screen-label="Settings" style="flex:1;overflow-y:auto;padding:26px">
-   <div style="max-width:1020px;margin:0 auto;display:grid;grid-template-columns:220px 1fr;gap:22px;align-items:start;padding-bottom:30px">
-    <aside style="background:#ffeae0;border-radius:28px;padding:12px;display:flex;flex-direction:column;gap:6px;box-shadow:0 6px 0 rgba(58,42,34,.05),inset 0 2px 0 rgba(255,255,255,.6)">
+  <main class="m-set" data-screen-label="Settings" style="flex:1;overflow-y:auto;padding:26px">
+   <div class="m-set-grid" style="max-width:1020px;margin:0 auto;display:grid;grid-template-columns:220px 1fr;gap:22px;align-items:start;padding-bottom:30px">
+    <aside class="m-set-tabs" style="background:#ffeae0;border-radius:28px;padding:12px;display:flex;flex-direction:column;gap:6px;box-shadow:0 6px 0 rgba(58,42,34,.05),inset 0 2px 0 rgba(255,255,255,.6)">
      <sc-for list="{{ settingsTabs }}" as="t" hint-placeholder-count="5">
       <button onClick="{{ t.onPick }}" style="display:flex;align-items:center;gap:10px;border:none;border-radius:9999px;padding:12px 14px;background:{{ t.bg }};color:{{ t.fg }};font-size:14px;font-weight:700;box-shadow:{{ t.sh }};text-align:left" style-active="transform:scale(.97)">
        <span style="font-family:'Material Symbols Outlined';font-size:20px;line-height:1">{{ t.icon }}</span>{{ t.label }}
@@ -507,7 +786,7 @@ a{color:#87512d}a:hover{color:#7a4624}
      <h1 style="margin:0;font-size:28px;font-weight:700;color:#87512d">{{ settingsTitle }}</h1>
 
      <sc-if value="{{ isStore }}" hint-placeholder-val="{{ false }}">
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px">
+      <div class="m-set-cards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px">
        <section style="background:#ffeae0;border-radius:28px;padding:20px;box-shadow:0 6px 0 rgba(58,42,34,.05),inset 0 2px 0 rgba(255,255,255,.6)">
         <h3 style="margin:0 0 14px;font-size:17px;font-weight:700;color:#87512d;border-bottom:2px solid #d7c3b8;padding-bottom:8px">Branding</h3>
         <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
@@ -534,18 +813,18 @@ a{color:#87512d}a:hover{color:#7a4624}
       </div>
       <section style="background:#ffeae0;border-radius:28px;padding:20px;box-shadow:0 6px 0 rgba(58,42,34,.05),inset 0 2px 0 rgba(255,255,255,.6)">
        <h3 style="margin:0 0 14px;font-size:17px;font-weight:700;color:#87512d;border-bottom:2px solid #d7c3b8;padding-bottom:8px">Operating Hours</h3>
-       <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:10px">
+       <div class="m-hours" style="display:grid;grid-template-columns:repeat(7,1fr);gap:10px">
         <sc-for list="{{ hoursRows }}" as="h" hint-placeholder-count="7">
          <div style="display:flex;flex-direction:column;gap:6px;opacity:{{ h.rowOp }}">
           <div style="text-align:center;font-size:12px;font-weight:700;color:#52443c;background:#f8ddd1;border-radius:12px;padding:6px 0">{{ h.d }}</div>
           <input value="{{ h.open }}" onInput="{{ h.onOpen }}" style="width:100%;text-align:center;border:2px solid #d7c3b8;border-radius:10px;background:#fff;padding:7px 2px;font-size:12px;font-weight:600;color:#261811">
           <input value="{{ h.close }}" onInput="{{ h.onClose }}" style="width:100%;text-align:center;border:2px solid #d7c3b8;border-radius:10px;background:#fff;padding:7px 2px;font-size:12px;font-weight:600;color:#261811">
-          <button onClick="{{ h.onToggleClosed }}" style="border:none;border-radius:10px;padding:6px 0;background:{{ h.clBg }};color:{{ h.clFg }};font-size:11px;font-weight:700">{{ h.closedLabel }}</button>
+          <button class="m-hour-tg" onClick="{{ h.onToggleClosed }}" style="border:none;border-radius:10px;padding:6px 0;background:{{ h.clBg }};color:{{ h.clFg }};font-size:11px;font-weight:700">{{ h.closedLabel }}</button>
          </div>
         </sc-for>
        </div>
       </section>
-      <section style="background:#ffdad6;border-radius:28px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:14px">
+      <section class="m-reset" style="background:#ffdad6;border-radius:28px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:14px">
        <div>
         <div style="font-size:15px;font-weight:700;color:#93000a">Reset demo data</div>
         <div style="font-size:13px;font-weight:600;color:#93000a;opacity:.8">Restores products, orders and staff to the demo set.</div>
@@ -563,9 +842,9 @@ a{color:#87512d}a:hover{color:#7a4624}
         </button>
        </div>
        <sc-for list="{{ staffRows }}" as="sr" hint-placeholder-count="5">
-        <div style="display:flex;align-items:center;gap:12px;background:#fff8f6;border-radius:20px;padding:10px 14px">
+        <div class="m-staff-row" style="display:flex;align-items:center;gap:12px;background:#fff8f6;border-radius:20px;padding:10px 14px">
          <img src="{{ sr.img }}" alt="" style="width:48px;height:48px;border-radius:9999px;object-fit:cover;background:#ffeae0;flex:none">
-         <input value="{{ sr.name }}" onInput="{{ sr.onName }}" style="flex:1;min-width:0;border:2px solid #d7c3b8;border-radius:14px;background:#fff;padding:9px 12px;font-size:14px;font-weight:700;color:#261811">
+         <input class="m-staff-name" value="{{ sr.name }}" onInput="{{ sr.onName }}" style="flex:1;min-width:0;border:2px solid #d7c3b8;border-radius:14px;background:#fff;padding:9px 12px;font-size:14px;font-weight:700;color:#261811">
          <div style="display:flex;align-items:center;gap:6px">
           <span style="font-size:12px;font-weight:700;color:#84746b">PIN</span>
           <input type="password" value="{{ sr.pin }}" onInput="{{ sr.onPin }}" style="width:76px;text-align:center;letter-spacing:3px;border:2px solid #d7c3b8;border-radius:14px;background:#fff;padding:9px 6px;font-size:14px;font-weight:700;color:#261811">
@@ -573,7 +852,7 @@ a{color:#87512d}a:hover{color:#7a4624}
          <sc-if value="{{ sr.isYou }}" hint-placeholder-val="{{ false }}">
           <span style="background:#beead3;color:#264e3d;font-size:11px;font-weight:700;border-radius:9999px;padding:5px 10px">You</span>
          </sc-if>
-         <button onClick="{{ sr.onRemove }}" style="width:38px;height:38px;border-radius:9999px;border:none;background:transparent;color:#84746b;display:flex;align-items:center;justify-content:center;opacity:{{ sr.removeOp }}" style-hover="background:#ffdad6;color:#93000a">
+         <button class="m-staff-del" onClick="{{ sr.onRemove }}" style="width:38px;height:38px;border-radius:9999px;border:none;background:transparent;color:#84746b;display:flex;align-items:center;justify-content:center;opacity:{{ sr.removeOp }}" style-hover="background:#ffdad6;color:#93000a">
           <span style="font-family:'Material Symbols Outlined';font-size:20px;line-height:1">delete</span>
          </button>
         </div>
@@ -583,7 +862,7 @@ a{color:#87512d}a:hover{color:#7a4624}
      </sc-if>
 
      <sc-if value="{{ isReceipt }}" hint-placeholder-val="{{ false }}">
-      <div style="display:grid;grid-template-columns:1fr 300px;gap:18px;align-items:start">
+      <div class="m-receipt-grid" style="display:grid;grid-template-columns:1fr 300px;gap:18px;align-items:start">
        <section style="background:#ffeae0;border-radius:28px;padding:20px;box-shadow:0 6px 0 rgba(58,42,34,.05),inset 0 2px 0 rgba(255,255,255,.6);display:flex;flex-direction:column;gap:14px">
         <h3 style="margin:0;font-size:17px;font-weight:700;color:#87512d;border-bottom:2px solid #d7c3b8;padding-bottom:8px">Receipt text</h3>
         <div style="display:flex;flex-direction:column;gap:6px">
@@ -632,8 +911,8 @@ a{color:#87512d}a:hover{color:#7a4624}
      <sc-if value="{{ isTaxes }}" hint-placeholder-val="{{ false }}">
       <section style="background:#ffeae0;border-radius:28px;padding:20px;box-shadow:0 6px 0 rgba(58,42,34,.05),inset 0 2px 0 rgba(255,255,255,.6);display:flex;flex-direction:column;gap:16px">
        <h3 style="margin:0;font-size:17px;font-weight:700;color:#87512d;border-bottom:2px solid #d7c3b8;padding-bottom:8px">Taxes</h3>
-       <div style="display:flex;align-items:center;gap:14px">
-        <div style="display:flex;flex-direction:column;gap:6px;width:180px">
+       <div class="m-tax-row" style="display:flex;align-items:center;gap:14px">
+        <div class="m-tax-field" style="display:flex;flex-direction:column;gap:6px;width:180px">
          <label style="font-size:12px;font-weight:700;color:#52443c">Tax rate (%)</label>
          <input name="taxRate" type="number" value="{{ setTaxRate }}" onInput="{{ onSetting }}" style="width:100%;border:2px solid #d7c3b8;border-radius:16px;background:#fff;padding:10px 14px;font-size:14px;font-weight:700;color:#261811">
         </div>
@@ -651,7 +930,7 @@ a{color:#87512d}a:hover{color:#7a4624}
       </section>
      </sc-if>
 
-     <div style="display:flex;justify-content:flex-end">
+     <div class="m-set-save" style="display:flex;justify-content:flex-end">
       <button onClick="{{ onSaveSettings }}" style="border:none;border-radius:9999px;padding:13px 28px;background:#87512d;color:#fff;font-size:14px;font-weight:700;box-shadow:0 6px 0 rgba(58,42,34,.15),inset 0 2px 0 rgba(255,255,255,.25)" style-active="transform:translateY(4px);box-shadow:none">Save Changes</button>
      </div>
     </div>
@@ -663,11 +942,11 @@ a{color:#87512d}a:hover{color:#7a4624}
 </sc-if>
 
 <sc-if value="{{ payOpen }}" hint-placeholder-val="{{ false }}">
-<div data-screen-label="Payment" style="position:fixed;inset:0;z-index:60;background:rgba(240,213,200,.5);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .2s ease">
- <div style="width:min(1020px,100%);height:min(700px,100%);background:#fff;border-radius:44px;box-shadow:0 12px 0 rgba(58,42,34,.12);display:flex;overflow:hidden;border:1px solid #f8ddd1">
-  <div style="width:340px;flex:none;border-right:2px dashed #d7c3b8;display:flex;flex-direction:column;min-height:0">
-   <h2 style="margin:0;padding:24px 24px 12px;font-size:22px;font-weight:700;color:#261811;text-align:center;border-bottom:2px solid #f8ddd1">Order Summary</h2>
-   <div style="flex:1;overflow-y:auto;padding:16px 24px;display:flex;flex-direction:column;gap:14px">
+<div class="m-pay-ov" data-screen-label="Payment" style="position:fixed;inset:0;z-index:60;background:rgba(240,213,200,.5);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .2s ease">
+ <div class="m-pay-panel" style="width:min(1020px,100%);height:min(700px,100%);background:#fff;border-radius:44px;box-shadow:0 12px 0 rgba(58,42,34,.12);display:flex;overflow:hidden;border:1px solid #f8ddd1">
+  <div class="m-pay-sum" style="width:340px;flex:none;border-right:2px dashed #d7c3b8;display:flex;flex-direction:column;min-height:0">
+   <h2 class="m-pay-sum-h" style="margin:0;padding:24px 24px 12px;font-size:22px;font-weight:700;color:#261811;text-align:center;border-bottom:2px solid #f8ddd1">Order Summary</h2>
+   <div class="m-pay-sum-items" style="flex:1;overflow-y:auto;padding:16px 24px;display:flex;flex-direction:column;gap:14px">
     <sc-for list="{{ payItems }}" as="pi" hint-placeholder-count="3">
      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
       <div style="display:flex;align-items:center;gap:10px;min-width:0">
@@ -681,51 +960,51 @@ a{color:#87512d}a:hover{color:#7a4624}
      <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#ba1a1a"><span>{{ discLabel }}</span><span>−{{ discStr }}</span></div>
     </sc-if>
    </div>
-   <div style="background:#ffb88c;border-radius:36px 36px 0 0;padding:22px 24px">
+   <div class="m-pay-total" style="background:#ffb88c;border-radius:36px 36px 0 0;padding:22px 24px">
     <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px">
-     <span style="font-size:20px;font-weight:700;color:#7a4624">Total</span>
-     <span style="font-size:42px;font-weight:700;letter-spacing:-1px;color:#7a4624;line-height:1">{{ totalStr }}</span>
+     <span class="m-pay-total-lbl" style="font-size:20px;font-weight:700;color:#7a4624">Total</span>
+     <span class="m-pay-total-amt" style="font-size:42px;font-weight:700;letter-spacing:-1px;color:#7a4624;line-height:1">{{ totalStr }}</span>
     </div>
     <div style="display:flex;justify-content:space-between;border-top:1px solid rgba(122,70,36,.25);padding-top:10px;font-size:13px;font-weight:600;color:rgba(122,70,36,.85)">
      <span>{{ payCount }} items</span><span>{{ taxShort }}</span>
     </div>
    </div>
   </div>
-  <div style="flex:1;display:flex;flex-direction:column;padding:22px;min-width:0">
-   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px">
+  <div class="m-pay-right" style="flex:1;display:flex;flex-direction:column;padding:22px;min-width:0">
+   <div class="m-pay-methods" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px">
     <sc-for list="{{ payMethods }}" as="m" hint-placeholder-count="4">
-     <button onClick="{{ m.onPick }}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:2px solid {{ m.bd }};border-radius:28px;padding:16px 8px;background:{{ m.bg }};color:{{ m.fg }};box-shadow:0 4px 0 rgba(58,42,34,.1),inset 0 1px 0 rgba(255,255,255,.5)" style-active="transform:translateY(3px);box-shadow:none">
-      <span style="font-family:'Material Symbols Outlined';font-size:36px;line-height:1;font-variation-settings:'FILL' {{ m.fill }}">{{ m.icon }}</span>
-      <span style="font-size:13px;font-weight:700">{{ m.label }}</span>
+     <button class="m-pay-method" onClick="{{ m.onPick }}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:2px solid {{ m.bd }};border-radius:28px;padding:16px 8px;background:{{ m.bg }};color:{{ m.fg }};box-shadow:0 4px 0 rgba(58,42,34,.1),inset 0 1px 0 rgba(255,255,255,.5)" style-active="transform:translateY(3px);box-shadow:none">
+      <span class="m-pay-mico" style="font-family:'Material Symbols Outlined';font-size:36px;line-height:1;font-variation-settings:'FILL' {{ m.fill }}">{{ m.icon }}</span>
+      <span class="m-pay-mlabel" style="font-size:13px;font-weight:700">{{ m.label }}</span>
      </button>
     </sc-for>
    </div>
-   <div style="flex:1;min-height:0;display:flex;flex-direction:column">
+   <div class="m-pay-body" style="flex:1;min-height:0;display:flex;flex-direction:column">
     <sc-if value="{{ isCash }}" hint-placeholder-val="{{ true }}">
-     <div style="flex:1;display:flex;gap:18px;min-height:0">
+     <div class="m-cash-row" style="flex:1;display:flex;gap:18px;min-height:0">
       <div style="flex:1;display:flex;flex-direction:column;gap:10px">
        <div style="display:flex;gap:8px">
         <sc-for list="{{ cashChips }}" as="ch" hint-placeholder-count="4">
          <button onClick="{{ ch.onTap }}" style="flex:1;border:none;border-radius:9999px;padding:11px 0;background:#ffb6aa;color:#9e2519;font-size:13px;font-weight:700;box-shadow:0 4px 0 rgba(58,42,34,.1),inset 0 1px 0 rgba(255,255,255,.4)" style-active="transform:translateY(3px);box-shadow:none">{{ ch.label }}</button>
         </sc-for>
        </div>
-       <div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr;gap:8px">
+       <div class="m-pad" style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr;gap:8px">
         <sc-for list="{{ payPad }}" as="k" hint-placeholder-count="12">
-         <button onClick="{{ k.onTap }}" style="border:none;border-radius:22px;background:#f8ddd1;color:#261811;font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 0 rgba(58,42,34,.1),inset 0 1px 0 rgba(255,255,255,.5);min-height:52px" style-active="transform:translateY(3px);box-shadow:none">
+         <button class="m-pad-key" onClick="{{ k.onTap }}" style="border:none;border-radius:22px;background:#f8ddd1;color:#261811;font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 0 rgba(58,42,34,.1),inset 0 1px 0 rgba(255,255,255,.5);min-height:52px" style-active="transform:translateY(3px);box-shadow:none">
           <sc-if value="{{ k.isIcon }}" hint-placeholder-val="{{ false }}"><span style="font-family:'Material Symbols Outlined';font-size:24px;line-height:1">backspace</span></sc-if>
           <sc-if value="{{ k.isNum }}" hint-placeholder-val="{{ true }}">{{ k.t }}</sc-if>
          </button>
         </sc-for>
        </div>
       </div>
-      <div style="width:190px;flex:none;display:flex;flex-direction:column;justify-content:center;gap:16px">
-       <div style="background:#ffeae0;border:2px solid #d7c3b8;border-radius:28px;padding:16px;text-align:center">
+      <div class="m-cash-side" style="width:190px;flex:none;display:flex;flex-direction:column;justify-content:center;gap:16px">
+       <div class="m-cash-box" style="background:#ffeae0;border:2px solid #d7c3b8;border-radius:28px;padding:16px;text-align:center">
         <div style="font-size:12px;font-weight:700;color:#52443c;margin-bottom:4px">Received</div>
-        <div style="font-size:26px;font-weight:700;color:#87512d;letter-spacing:-.5px">{{ receivedStr }}</div>
+        <div class="m-cash-amt" style="font-size:26px;font-weight:700;color:#87512d;letter-spacing:-.5px">{{ receivedStr }}</div>
        </div>
-       <div style="background:{{ chBg }};border:2px solid {{ chBd }};border-radius:28px;padding:16px;text-align:center;box-shadow:0 4px 0 rgba(58,42,34,.08)">
+       <div class="m-cash-box" style="background:{{ chBg }};border:2px solid {{ chBd }};border-radius:28px;padding:16px;text-align:center;box-shadow:0 4px 0 rgba(58,42,34,.08)">
         <div style="font-size:12px;font-weight:700;color:{{ chFg }};margin-bottom:4px">{{ changeLabel }}</div>
-        <div style="font-size:26px;font-weight:700;color:{{ chFg }};letter-spacing:-.5px">{{ changeStr }}</div>
+        <div class="m-cash-amt" style="font-size:26px;font-weight:700;color:{{ chFg }};letter-spacing:-.5px">{{ changeStr }}</div>
        </div>
       </div>
      </div>
@@ -733,7 +1012,7 @@ a{color:#87512d}a:hover{color:#7a4624}
     <sc-if value="{{ isQr }}" hint-placeholder-val="{{ false }}">
      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">
       <div style="background:#fff;border:2px solid #d7c3b8;border-radius:28px;padding:18px;box-shadow:0 6px 0 rgba(58,42,34,.08)">
-       <span style="font-family:'Material Symbols Outlined';font-size:150px;line-height:1;color:#261811">qr_code_2</span>
+       <span class="m-qr-ico" style="font-family:'Material Symbols Outlined';font-size:150px;line-height:1;color:#261811">qr_code_2</span>
       </div>
       <div style="font-size:16px;font-weight:700;color:#261811">Show the customer this PromptPay QR</div>
       <div style="font-size:30px;font-weight:700;color:#87512d;letter-spacing:-.5px">{{ totalStr }}</div>
@@ -750,7 +1029,7 @@ a{color:#87512d}a:hover{color:#7a4624}
        <div style="font-size:13px;font-weight:600;color:#84746b">Hold on, talking to the terminal</div>
       </sc-if>
       <sc-if value="{{ payNotProcessing }}" hint-placeholder-val="{{ true }}">
-       <span style="font-family:'Material Symbols Outlined';font-size:110px;line-height:1;color:#87512d">credit_card</span>
+       <span class="m-card-ico" style="font-family:'Material Symbols Outlined';font-size:110px;line-height:1;color:#87512d">credit_card</span>
        <div style="font-size:18px;font-weight:700;color:#261811">Insert, tap or swipe the card</div>
        <div style="font-size:30px;font-weight:700;color:#87512d;letter-spacing:-.5px">{{ totalStr }}</div>
       </sc-if>
@@ -772,12 +1051,12 @@ a{color:#87512d}a:hover{color:#7a4624}
      </div>
     </sc-if>
    </div>
-   <div style="display:flex;gap:14px;margin-top:18px">
-    <button onClick="{{ closePay }}" style="width:33%;border:none;border-radius:9999px;padding:16px 0;background:#f8ddd1;color:#52443c;font-size:19px;font-weight:700;box-shadow:0 6px 0 rgba(58,42,34,.1),inset 0 2px 0 rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;gap:8px" style-active="transform:translateY(4px);box-shadow:none">
-     <span style="font-family:'Material Symbols Outlined';font-size:22px;line-height:1">arrow_back</span>Back
+   <div class="m-pay-actions" style="display:flex;gap:14px;margin-top:18px">
+    <button class="m-pay-back" onClick="{{ closePay }}" style="width:33%;border:none;border-radius:9999px;padding:16px 0;background:#f8ddd1;color:#52443c;font-size:19px;font-weight:700;box-shadow:0 6px 0 rgba(58,42,34,.1),inset 0 2px 0 rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;gap:8px" style-active="transform:translateY(4px);box-shadow:none">
+     <span class="m-pay-bico" style="font-family:'Material Symbols Outlined';font-size:22px;line-height:1">arrow_back</span>Back
     </button>
-    <button onClick="{{ onCompletePay }}" style="flex:1;border:none;border-radius:9999px;padding:16px 0;background:#ae3123;color:#fff;font-size:19px;font-weight:700;box-shadow:0 6px 0 rgba(58,42,34,.15),inset 0 2px 0 rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;gap:8px;opacity:{{ payCtaOp }}" style-active="transform:translateY(4px);box-shadow:none">
-     {{ payCta }}<span style="font-family:'Material Symbols Outlined';font-size:22px;line-height:1;font-variation-settings:'FILL' 1">check_circle</span>
+    <button class="m-pay-cta" onClick="{{ onCompletePay }}" style="flex:1;border:none;border-radius:9999px;padding:16px 0;background:#ae3123;color:#fff;font-size:19px;font-weight:700;box-shadow:0 6px 0 rgba(58,42,34,.15),inset 0 2px 0 rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;gap:8px;opacity:{{ payCtaOp }}" style-active="transform:translateY(4px);box-shadow:none">
+     {{ payCta }}<span class="m-pay-cico" style="font-family:'Material Symbols Outlined';font-size:22px;line-height:1;font-variation-settings:'FILL' 1">check_circle</span>
     </button>
    </div>
   </div>
@@ -786,18 +1065,18 @@ a{color:#87512d}a:hover{color:#7a4624}
 </sc-if>
 
 <sc-if value="{{ isSuccess }}" hint-placeholder-val="{{ false }}">
-<div data-screen-label="Payment Success" style="position:fixed;inset:0;z-index:70;background:#fff8f6;display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto">
- <main style="width:100%;max-width:440px;display:flex;flex-direction:column;align-items:center;gap:20px">
+<div class="m-succ" data-screen-label="Payment Success" style="position:fixed;inset:0;z-index:70;background:#fff8f6;display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto">
+ <main class="m-succ-main" style="width:100%;max-width:440px;display:flex;flex-direction:column;align-items:center;gap:20px">
   <div style="text-align:center;animation:popIn .5s cubic-bezier(.175,.885,.32,1.275)">
-   <div style="position:relative;width:170px;height:170px;margin:0 auto 6px">
+   <div class="m-succ-art" style="position:relative;width:170px;height:170px;margin:0 auto 6px">
     <div style="position:absolute;inset:0;background:rgba(255,184,140,.35);border-radius:9999px;filter:blur(28px)"></div>
     <sc-for list="{{ confetti }}" as="cf" hint-placeholder-count="8">
      <span style="position:absolute;top:0;left:{{ cf.left }}%;width:{{ cf.size }}px;height:{{ cf.size }}px;border-radius:{{ cf.br }};background:{{ cf.color }};animation:confettiFall {{ cf.dur }}s ease-in {{ cf.delay }}s infinite;pointer-events:none"></span>
     </sc-for>
     <img src="{{ imgParty }}" alt="" style="width:100%;height:100%;object-fit:contain;position:relative">
    </div>
-   <h1 style="margin:0;font-size:30px;font-weight:700;color:#87512d">Payment Success!</h1>
-   <div style="font-size:44px;font-weight:700;letter-spacing:-1px;color:#261811;margin-top:6px">Paid {{ rcPaid }}</div>
+   <h1 class="m-succ-h1" style="margin:0;font-size:30px;font-weight:700;color:#87512d">Payment Success!</h1>
+   <div class="m-succ-paid" style="font-size:44px;font-weight:700;letter-spacing:-1px;color:#261811;margin-top:6px">Paid {{ rcPaid }}</div>
    <sc-if value="{{ rcHasChange }}" hint-placeholder-val="{{ false }}">
     <div style="font-size:22px;font-weight:700;color:#3e6654;margin-top:4px">Change {{ rcChange }}</div>
    </sc-if>
@@ -842,14 +1121,14 @@ a{color:#87512d}a:hover{color:#7a4624}
 <sc-if value="{{ editingOpen }}" hint-placeholder-val="{{ false }}">
 <div style="position:fixed;inset:0;z-index:65">
  <div onClick="{{ edOnCancel }}" style="position:absolute;inset:0;background:rgba(61,45,37,.3);animation:fadeIn .2s"></div>
- <div style="position:absolute;top:0;right:0;bottom:0;width:min(480px,100%);background:#fff;box-shadow:-12px 0 32px rgba(58,42,34,.15);display:flex;flex-direction:column;animation:slideInRight .25s ease">
-  <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:2px solid #ffeae0">
+ <div class="m-drawer" style="position:absolute;top:0;right:0;bottom:0;width:min(480px,100%);background:#fff;box-shadow:-12px 0 32px rgba(58,42,34,.15);display:flex;flex-direction:column;animation:slideInRight .25s ease">
+  <div class="m-drawer-head" style="display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:2px solid #ffeae0">
    <h2 style="margin:0;font-size:21px;font-weight:700;color:#87512d">{{ edTitle }}</h2>
    <button onClick="{{ edOnCancel }}" style="width:40px;height:40px;border-radius:9999px;border:none;background:transparent;color:#84746b;display:flex;align-items:center;justify-content:center" style-hover="background:#ffeae0">
     <span style="font-family:'Material Symbols Outlined';font-size:22px;line-height:1">close</span>
    </button>
   </div>
-  <div style="flex:1;overflow-y:auto;padding:22px 24px;display:flex;flex-direction:column;gap:18px">
+  <div class="m-drawer-body" style="flex:1;overflow-y:auto;padding:22px 24px;display:flex;flex-direction:column;gap:18px">
    <div style="align-self:center;width:190px;background:#fff1eb;border-radius:28px;padding:16px;display:flex;flex-direction:column;align-items:center;text-align:center;box-shadow:0 6px 0 rgba(58,42,34,.06)">
     <img src="{{ edImg }}" alt="" style="width:84px;height:84px;border-radius:9999px;object-fit:cover;background:#ffeae0;border:4px solid #fff;box-shadow:0 3px 0 rgba(58,42,34,.1);margin-bottom:8px">
     <div style="font-size:15px;font-weight:700;color:#261811;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ edPreviewName }}</div>
@@ -869,12 +1148,12 @@ a{color:#87512d}a:hover{color:#7a4624}
     <label style="font-size:12px;font-weight:700;color:#52443c">Product name</label>
     <input name="name" value="{{ edName }}" onInput="{{ edOnField }}" placeholder="e.g. Strawberry Mochi" style="width:100%;border:2px solid #d7c3b8;border-radius:16px;background:#fff;padding:11px 14px;font-size:14px;font-weight:600;color:#261811">
    </div>
-   <div style="display:flex;gap:14px">
-    <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+   <div class="m-ed-row" style="display:flex;gap:14px">
+    <div class="m-ed-col" style="flex:1;display:flex;flex-direction:column;gap:6px">
      <label style="font-size:12px;font-weight:700;color:#52443c">Price ({{ curSymbol }})</label>
      <input name="price" value="{{ edPrice }}" onInput="{{ edOnField }}" placeholder="0" inputMode="numeric" style="width:100%;border:2px solid #d7c3b8;border-radius:16px;background:#fff;padding:11px 14px;font-size:14px;font-weight:700;color:#261811">
     </div>
-    <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+    <div class="m-ed-col" style="flex:1;display:flex;flex-direction:column;gap:6px">
      <label style="font-size:12px;font-weight:700;color:#52443c">Category</label>
      <select name="cat" value="{{ edCat }}" onChange="{{ edOnField }}" style="width:100%;border:2px solid #d7c3b8;border-radius:16px;background:#fff;padding:11px 14px;font-size:14px;font-weight:600;color:#261811">
       <option value="Mochi">Mochi</option>
@@ -898,7 +1177,7 @@ a{color:#87512d}a:hover{color:#7a4624}
     </button>
    </sc-if>
   </div>
-  <div style="display:flex;justify-content:flex-end;gap:12px;padding:18px 24px;border-top:2px solid #ffeae0;background:#fff8f6">
+  <div class="m-drawer-foot" style="display:flex;justify-content:flex-end;gap:12px;padding:18px 24px;border-top:2px solid #ffeae0;background:#fff8f6">
    <button onClick="{{ edOnCancel }}" style="border:none;border-radius:9999px;padding:12px 22px;background:transparent;color:#52443c;font-size:14px;font-weight:700" style-hover="background:#ffeae0">Cancel</button>
    <button onClick="{{ edOnSave }}" style="border:none;border-radius:9999px;padding:12px 26px;background:#87512d;color:#fff;font-size:14px;font-weight:700;box-shadow:0 5px 0 rgba(58,42,34,.15),inset 0 2px 0 rgba(255,255,255,.25)" style-active="transform:translateY(3px);box-shadow:none">Save Changes</button>
   </div>
@@ -907,8 +1186,8 @@ a{color:#87512d}a:hover{color:#7a4624}
 </sc-if>
 
 <sc-if value="{{ discOpen }}" hint-placeholder-val="{{ false }}">
-<div style="position:fixed;inset:0;z-index:75;background:rgba(61,45,37,.35);display:flex;align-items:center;justify-content:center;animation:fadeIn .15s;padding:20px">
- <div style="background:#fff;border-radius:32px;padding:26px;width:380px;box-shadow:0 10px 0 rgba(58,42,34,.12);animation:popIn .25s">
+<div class="m-scrim" style="position:fixed;inset:0;z-index:75;background:rgba(61,45,37,.35);display:flex;align-items:center;justify-content:center;animation:fadeIn .15s;padding:20px">
+ <div class="m-modal" style="background:#fff;border-radius:32px;padding:26px;width:min(380px,100%);box-shadow:0 10px 0 rgba(58,42,34,.12);animation:popIn .25s">
   <h3 style="margin:0 0 4px;font-size:20px;font-weight:700;color:#261811">Discount</h3>
   <p style="margin:0 0 16px;font-size:13px;font-weight:600;color:#84746b">Applied to the whole order.</p>
   <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">
@@ -926,8 +1205,8 @@ a{color:#87512d}a:hover{color:#7a4624}
 </sc-if>
 
 <sc-if value="{{ confirmOpen }}" hint-placeholder-val="{{ false }}">
-<div style="position:fixed;inset:0;z-index:80;background:rgba(61,45,37,.35);display:flex;align-items:center;justify-content:center;animation:fadeIn .15s;padding:20px">
- <div style="background:#fff;border-radius:32px;padding:26px;width:380px;box-shadow:0 10px 0 rgba(58,42,34,.12);animation:popIn .25s">
+<div class="m-scrim" style="position:fixed;inset:0;z-index:80;background:rgba(61,45,37,.35);display:flex;align-items:center;justify-content:center;animation:fadeIn .15s;padding:20px">
+ <div class="m-modal" style="background:#fff;border-radius:32px;padding:26px;width:min(380px,100%);box-shadow:0 10px 0 rgba(58,42,34,.12);animation:popIn .25s">
   <h3 style="margin:0 0 6px;font-size:20px;font-weight:700;color:#261811">{{ confirmTitle }}</h3>
   <p style="margin:0 0 20px;font-size:14px;font-weight:600;color:#52443c">{{ confirmMsg }}</p>
   <div style="display:flex;gap:10px">
@@ -938,9 +1217,9 @@ a{color:#87512d}a:hover{color:#7a4624}
 </div>
 </sc-if>
 
-<div style="position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:90;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none">
+<div class="m-toast-wrap" style="position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:90;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none">
  <sc-for list="{{ toasts }}" as="t" hint-placeholder-count="0">
-  <div style="display:flex;align-items:center;gap:8px;background:#3d2d25;color:#ffede6;border-radius:9999px;padding:10px 18px;font-size:14px;font-weight:700;box-shadow:0 6px 0 rgba(58,42,34,.2);animation:toastIn .2s ease;white-space:nowrap">
+  <div class="m-toast" style="display:flex;align-items:center;gap:8px;background:#3d2d25;color:#ffede6;border-radius:9999px;padding:10px 18px;font-size:14px;font-weight:700;box-shadow:0 6px 0 rgba(58,42,34,.2);animation:toastIn .2s ease;white-space:nowrap">
    <span style="font-family:'Material Symbols Outlined';font-size:18px;line-height:1;color:#feb78b;font-variation-settings:'FILL' 1">{{ t.icon }}</span>{{ t.msg }}
   </div>
  </sc-for>
@@ -994,7 +1273,7 @@ class Component extends DCLogic {
   const settings = { storeName: 'Mochi & Co.', currency: '฿', taxRate: 7, taxIncluded: true, receiptHeader: 'Mochi & Co. · 12 Sweet Street', receiptFooter: 'Thank you, come again!', autoPrint: false, paper: '80mm', hours: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d, i) => ({ d, open: i > 4 ? '09:00' : '08:00', close: i > 3 ? '20:00' : '18:00', closed: d === 'Sun' })) };
   return { v: 1, products, staff, orders, settings, session: null, screen: 'login', cart: [], discountPct: 0, selStaffId: 's1', lastReceipt: null };
  }
- volatiles() { return { pin: '', pinShake: false, payOpen: false, pay: { method: 'cash', received: '', people: 2, processing: false }, q: '', cat: 'all', notifOpen: false, acctOpen: false, discOpen: false, customPct: '', confirm: null, editing: null, toasts: [], ordersTab: 'completed', ordersToday: true, selOrderNo: null, range: 'today', settingsTab: 'store' }; }
+ volatiles() { return { pin: '', pinShake: false, cartOpen: false, payOpen: false, pay: { method: 'cash', received: '', people: 2, processing: false }, q: '', cat: 'all', notifOpen: false, acctOpen: false, discOpen: false, customPct: '', confirm: null, editing: null, toasts: [], ordersTab: 'completed', ordersToday: true, selOrderNo: null, range: 'today', settingsTab: 'store' }; }
  boot() {
   let s = null; try { s = JSON.parse(localStorage.getItem('mochi-pos-v1')) } catch (e) { }
   const base = (s && s.v === 1) ? s : this.seed();
@@ -1018,18 +1297,18 @@ class Component extends DCLogic {
  shakePin() { this.setState({ pinShake: true }); setTimeout(() => this.setState({ pinShake: false }), 450) }
  addToCart(id) { const S = this.state, p = S.products.find(x => x.id === id); if (!p) return; if (p.stock <= 0) { this.toast(p.name + ' is sold out', 'warning'); return } const ci = S.cart.find(x => x.id === id); if (ci && ci.qty >= p.stock) { this.toast('Only ' + p.stock + ' in stock', 'warning'); return } this.up({ cart: ci ? S.cart.map(x => x.id === id ? { ...x, qty: x.qty + 1 } : x) : [...S.cart, { id, name: p.name, price: p.price, qty: 1 }] }) }
  chQty(id, d) { const S = this.state, ci = S.cart.find(x => x.id === id); if (!ci) return; if (d > 0) { const p = S.products.find(x => x.id === id); if (p && ci.qty >= p.stock) { this.toast('Only ' + p.stock + ' in stock', 'warning'); return } } const q = ci.qty + d; this.up({ cart: q <= 0 ? S.cart.filter(x => x.id !== id) : S.cart.map(x => x.id === id ? { ...x, qty: q } : x) }) }
- hold() { const S = this.state; if (!S.cart.length) { this.toast('Cart is empty', 'info'); return } const c = this.calc(); this.up({ orders: [...S.orders, { no: this.nextNo(), ts: Date.now(), items: S.cart.map(x => ({ ...x })), subtotal: c.sub, discount: c.disc, discPct: S.discountPct, total: c.total, method: null, received: 0, change: 0, status: 'held', staff: S.session.name }], cart: [], discountPct: 0 }); this.toast('Order held — find it in Orders', 'pause_circle') }
- openPay() { const S = this.state; if (!S.cart.length) { this.toast('Add items to the cart first', 'info'); return } this.setState({ payOpen: true, pay: { method: 'cash', received: '', people: 2, processing: false } }) }
+ hold() { const S = this.state; if (!S.cart.length) { this.toast('Cart is empty', 'info'); return } const c = this.calc(); this.up({ orders: [...S.orders, { no: this.nextNo(), ts: Date.now(), items: S.cart.map(x => ({ ...x })), subtotal: c.sub, discount: c.disc, discPct: S.discountPct, total: c.total, method: null, received: 0, change: 0, status: 'held', staff: S.session.name }], cart: [], discountPct: 0, cartOpen: false }); this.toast('Order held — find it in Orders', 'pause_circle') }
+ openPay() { const S = this.state; if (!S.cart.length) { this.toast('Add items to the cart first', 'info'); return } this.setState({ payOpen: true, cartOpen: false, pay: { method: 'cash', received: '', people: 2, processing: false } }) }
  cancelPay() { if (this._payTimer) { clearTimeout(this._payTimer); this._payTimer = null } if (this.state.payOpen) this.setState({ payOpen: false, pay: { ...this.state.pay, processing: false } }) }
  padPay(k) { const S = this.state; let r = S.pay.received; if (k === 'back') r = r.slice(0, -1); else if (r.length < 7) r += k; r = r.replace(/^0+(?=\d)/, ''); this.setState({ pay: { ...S.pay, received: r } }) }
  completePay() { const S = this.state, c = this.calc(), m = S.pay.method; if (m === 'cash') { const r = parseInt(S.pay.received || '0', 10); if (r < c.total) { this.toast('Received amount is not enough', 'error'); return } } if (m === 'card') { if (S.pay.processing) return; this.setState({ pay: { ...S.pay, processing: true } }); this._payTimer = setTimeout(() => { this._payTimer = null; this.finishPay() }, 1400); return } this.finishPay() }
- finishPay() { const S = this.state; if (!S.cart.length) { this.setState({ payOpen: false, pay: { ...S.pay, processing: false } }); return } const c = this.calc(), m = S.pay.method, rec = m === 'cash' ? parseInt(S.pay.received || '0', 10) : c.total; const order = { no: this.nextNo(), ts: Date.now(), items: S.cart.map(x => ({ ...x })), subtotal: c.sub, discount: c.disc, discPct: S.discountPct, total: c.total, method: m, received: rec, change: rec - c.total, status: 'completed', staff: S.session.name }; this.up({ orders: [...S.orders, order], products: S.products.map(p => { const ci = S.cart.find(x => x.id === p.id); return ci ? { ...p, stock: Math.max(0, p.stock - ci.qty) } : p }), cart: [], discountPct: 0, payOpen: false, pay: { method: 'cash', received: '', people: 2, processing: false }, lastReceipt: order, screen: 'success' }); if (S.settings.autoPrint) setTimeout(() => this.toast('Receipt sent to printer', 'print'), 700) }
+ finishPay() { const S = this.state; if (!S.cart.length) { this.setState({ payOpen: false, pay: { ...S.pay, processing: false } }); return } const c = this.calc(), m = S.pay.method, rec = m === 'cash' ? parseInt(S.pay.received || '0', 10) : c.total; const order = { no: this.nextNo(), ts: Date.now(), items: S.cart.map(x => ({ ...x })), subtotal: c.sub, discount: c.disc, discPct: S.discountPct, total: c.total, method: m, received: rec, change: rec - c.total, status: 'completed', staff: S.session.name }; this.up({ orders: [...S.orders, order], products: S.products.map(p => { const ci = S.cart.find(x => x.id === p.id); return ci ? { ...p, stock: Math.max(0, p.stock - ci.qty) } : p }), cart: [], discountPct: 0, cartOpen: false, payOpen: false, pay: { method: 'cash', received: '', people: 2, processing: false }, lastReceipt: order, screen: 'success' }); if (S.settings.autoPrint) setTimeout(() => this.toast('Receipt sent to printer', 'print'), 700) }
  refund(no) { const S = this.state, o = S.orders.find(x => x.no === no); if (!o) return; this.up({ orders: S.orders.map(x => x.no === no ? { ...x, status: 'refunded' } : x), products: S.products.map(p => { const it = o.items.find(i => i.id === p.id); return it ? { ...p, stock: p.stock + it.qty } : p }), confirm: null }); this.toast('Order ' + this.noStr(no) + ' refunded', 'undo') }
- resume(no) { const S = this.state, o = S.orders.find(x => x.no === no); if (!o) return; let trimmed = false; const cart = o.items.map(x => { const p = S.products.find(y => y.id === x.id), max = p ? p.stock : 0; if (x.qty > max) trimmed = true; return { ...x, qty: Math.min(x.qty, max) } }).filter(x => x.qty > 0); this.up({ cart, discountPct: o.discPct || 0, orders: S.orders.filter(x => x.no !== no), screen: 'sales', confirm: null, selOrderNo: null }); this.toast(trimmed ? 'Order resumed — some items reduced to match stock' : 'Order resumed — ready to charge', trimmed ? 'warning' : 'play_circle') }
+ resume(no) { const S = this.state, o = S.orders.find(x => x.no === no); if (!o) return; let trimmed = false; const cart = o.items.map(x => { const p = S.products.find(y => y.id === x.id), max = p ? p.stock : 0; if (x.qty > max) trimmed = true; return { ...x, qty: Math.min(x.qty, max) } }).filter(x => x.qty > 0); this.up({ cart, discountPct: o.discPct || 0, orders: S.orders.filter(x => x.no !== no), screen: 'sales', confirm: null, selOrderNo: null, cartOpen: false }); this.toast(trimmed ? 'Order resumed — some items reduced to match stock' : 'Order resumed — ready to charge', trimmed ? 'warning' : 'play_circle') }
  ask(c) { this.setState({ confirm: c, acctOpen: false }) }
  doConfirm() {
   const S = this.state, c = S.confirm; if (!c) return; const a = c.act;
-  if (a === 'void') this.up({ cart: [], discountPct: 0, confirm: null }, () => this.toast('Order voided', 'delete'));
+  if (a === 'void') this.up({ cart: [], discountPct: 0, cartOpen: false, confirm: null }, () => this.toast('Order voided', 'delete'));
   else if (a === 'refund') this.refund(c.no);
   else if (a === 'resume') this.resume(c.no);
   else if (a === 'delHeld') this.up({ orders: S.orders.filter(x => x.no !== c.no), confirm: null, selOrderNo: null }, () => this.toast('Held order deleted', 'delete'));
@@ -1050,7 +1329,7 @@ class Component extends DCLogic {
   this._kd = (e) => {
    const S = this.state;
    if (S.screen === 'login') { if (/^[0-9]$/.test(e.key)) this.tapPin(e.key); else if (e.key === 'Backspace') this.setState({ pin: S.pin.slice(0, -1) }); else if (e.key === 'Enter') { if (S.pin.length === 4) this.checkPin(); else this.shakePin() } return }
-   if (e.key === 'Escape') { this.cancelPay(); this.setState({ discOpen: false, confirm: null, editing: null, notifOpen: false, acctOpen: false }); return }
+   if (e.key === 'Escape') { this.cancelPay(); this.setState({ discOpen: false, confirm: null, editing: null, notifOpen: false, acctOpen: false, cartOpen: false }); return }
    if (S.payOpen && S.pay.method === 'cash' && !S.confirm) { if (/^[0-9]$/.test(e.key)) this.padPay(e.key); else if (e.key === 'Backspace') this.padPay('back'); else if (e.key === 'Enter') this.completePay() }
   };
   window.addEventListener('keydown', this._kd);
@@ -1076,7 +1355,7 @@ class Component extends DCLogic {
   const q = (S.q || '').toLowerCase().trim();
   const pill = a => ({ fill: a ? '1' : '0', bg: a ? '#ffb88c' : 'transparent', fg: a ? '#7a4624' : '#52443c', bd: a ? '#ffb88c' : '#d7c3b8', sh: a ? '0 4px 0 rgba(58,42,34,.1)' : 'none' });
   const cats = [{ id: 'all', label: 'All items', icon: 'apps' }, { id: 'Mochi', label: 'Mochi', icon: 'bakery_dining' }, { id: 'Cakes', label: 'Cakes', icon: 'cake' }, { id: 'Drinks', label: 'Drinks', icon: 'local_cafe' }, { id: 'Seasonal', label: 'Seasonal', icon: 'redeem' }].map(cd => ({ label: cd.label, icon: cd.icon, ...pill((S.cat || 'all') === cd.id), onPick: () => this.setState({ cat: cd.id }) }));
-  const navItems = [{ id: 'sales', label: 'Sales', icon: 'storefront' }, { id: 'orders', label: 'Orders', icon: 'receipt_long' }, { id: 'inventory', label: 'Inventory', icon: 'inventory_2' }, { id: 'dashboard', label: 'Dashboard', icon: 'monitoring' }, { id: 'settings', label: 'Settings', icon: 'settings' }].map(n => ({ label: n.label, icon: n.icon, ...pill(scr === n.id), onPick: () => this.up({ screen: n.id, q: '', notifOpen: false, acctOpen: false }) }));
+  const navItems = [{ id: 'sales', label: 'Sales', icon: 'storefront' }, { id: 'orders', label: 'Orders', icon: 'receipt_long' }, { id: 'inventory', label: 'Inventory', icon: 'inventory_2' }, { id: 'dashboard', label: 'Dashboard', icon: 'monitoring' }, { id: 'settings', label: 'Settings', icon: 'settings' }].map(n => ({ label: n.label, icon: n.icon, ...pill(scr === n.id), onPick: () => this.up({ screen: n.id, q: '', notifOpen: false, acctOpen: false, cartOpen: false }) }));
   const cat = S.cat || 'all';
   const gridProducts = S.products.filter(p => p.active && (cat === 'all' || p.cat === cat) && (!q || p.name.toLowerCase().includes(q))).map(p => { const so = p.stock <= 0; return { name: p.name, cat: p.cat, img: IM(p.img), priceStr: fmt(p.price), low: !so && p.stock <= th, lowLabel: p.stock + ' left', soldOut: so, op: so ? '.55' : '1', onAdd: () => this.addToCart(p.id) } });
   const cartItems = S.cart.map(x => ({ name: x.name, meta: fmt(x.price) + ' × ' + x.qty, qty: x.qty, lineStr: fmt(x.price * x.qty), onInc: () => this.chQty(x.id, 1), onDec: () => this.chQty(x.id, -1) }));
@@ -1093,7 +1372,8 @@ class Component extends DCLogic {
   const stMap = { completed: { bg: '#beead3', fg: '#264e3d', icon: 'check_circle', label: 'Completed' }, held: { bg: '#ffdbc8', fg: '#7a4624', icon: 'pause_circle', label: 'Held' }, refunded: { bg: '#ffdad6', fg: '#93000a', icon: 'undo', label: 'Refunded' } };
   const orderTabs = [{ id: 'held', label: 'Held' }, { id: 'completed', label: 'Completed' }, { id: 'refunded', label: 'Refunded' }].map(t => { const a = S.ordersTab === t.id; return { label: t.label, bg: a ? '#ffb88c' : 'transparent', fg: a ? '#7a4624' : '#52443c', sh: a ? '0 3px 0 rgba(58,42,34,.12)' : 'none', onPick: () => this.setState({ ordersTab: t.id, selOrderNo: null }) } });
   const filtered = S.orders.filter(o => o.status === S.ordersTab && (!S.ordersToday || o.ts >= t0) && (!q || this.noStr(o.no).includes(q) || String(o.no).includes(q))).sort((a, b) => b.ts - a.ts);
-  const selNo = filtered.some(o => o.no === S.selOrderNo) ? S.selOrderNo : (filtered[0] ? filtered[0].no : null);
+  const ordPicked = filtered.some(o => o.no === S.selOrderNo);
+  const selNo = ordPicked ? S.selOrderNo : (filtered[0] ? filtered[0].no : null);
   const ordersList = filtered.map(o => { const sel = o.no === selNo, st = stMap[o.status]; return { no: this.noStr(o.no), when: (o.ts >= t0 ? '' : dstr(o.ts) + ' · ') + tstr(o.ts), staff: o.staff, stBg: st.bg, stFg: st.fg, stIcon: st.icon, stLabel: st.label, count: o.items.reduce((a, x) => a + x.qty, 0), totalStr: fmt(o.total), totalColor: sel ? '#87512d' : '#261811', bg: sel ? '#ffffff' : '#fff1eb', bd: sel ? '#87512d' : '#d7c3b8', sh: sel ? '0 6px 0 rgba(58,42,34,.08)' : 'none', onSel: () => this.setState({ selOrderNo: o.no }) } });
   const so = selNo !== null ? S.orders.find(o => o.no === selNo) : null;
   const soSt = so ? stMap[so.status] : { bg: '', fg: '', icon: '', label: '' };
@@ -1146,6 +1426,8 @@ class Component extends DCLogic {
    onSwitchUser: () => this.up({ session: null, screen: 'login', acctOpen: false }), onCloseShift: () => this.closeShiftAsk(),
    cats, navItems,
    gridProducts, gridEmpty: gridProducts.length === 0, cartEmpty: S.cart.length === 0, cartItems, nextNoStr: this.noStr(this.nextNo()),
+   mCartCls: (S.cartOpen && scr === 'sales' && !S.payOpen) ? 'm-cart-open' : '', mToggleCart: () => this.setState({ cartOpen: !S.cartOpen }), mCloseCart: () => this.setState({ cartOpen: false }),
+   mCartBarLabel: c.count ? (c.count + (c.count > 1 ? ' items' : ' item') + ' in cart') : 'Cart is empty — tap a product',
    subStr: fmt(c.sub), discLabel: S.discountPct ? 'Discount (' + S.discountPct + '%)' : 'Discount', discStr: fmt(c.disc), taxNote, totalStr: fmt(c.total), chargeOp: S.cart.length ? '1' : '.55',
    onHold: () => this.hold(), onDisc: () => { if (!S.cart.length) { this.toast('Cart is empty', 'info'); return } this.setState({ discOpen: true, customPct: '' }) }, onVoid: () => { if (!S.cart.length) { this.toast('Cart is empty', 'info'); return } this.ask({ title: 'Void order?', msg: 'This clears the current cart.', cta: 'Void', color: '#ba1a1a', act: 'void' }) }, openPay: () => this.openPay(),
    payOpen: S.payOpen, payItems: S.cart.map(x => ({ qb: x.qty + 'x', name: x.name, lineStr: fmt(x.price * x.qty) })), payHasDisc: c.disc > 0, payCount: c.count, taxShort: S.settings.taxIncluded ? 'Tax included' : 'Tax ' + S.settings.taxRate + '% added',
@@ -1156,9 +1438,9 @@ class Component extends DCLogic {
    payCta: pm === 'cash' ? 'Complete payment' : pm === 'qr' ? 'Confirm QR paid' : pm === 'card' ? (S.pay.processing ? 'Processing…' : 'Charge card') : 'Complete split', payCtaOp: (pm === 'cash' && short) || S.pay.processing ? '.55' : '1',
    onCompletePay: () => this.completePay(), closePay: () => this.cancelPay(),
    rcPaid: fmt(rc.received), rcHasChange: rc.method === 'cash' && rc.change > 0, rcChange: fmt(rc.change), rcHeader: S.settings.receiptHeader, rcMeta: 'Order ' + this.noStr(rc.no) + ' · ' + tstr(rc.ts) + ' · ' + rc.staff + ' · ' + (rc.method || '').toUpperCase(), rcItems: rc.items.map(x => ({ name: x.name + ' × ' + x.qty, lineStr: fmt(x.price * x.qty) })), rcHasDisc: rc.discount > 0, rcDisc: fmt(rc.discount), rcTotal: fmt(rc.total), rcFooter: S.settings.receiptFooter,
-   onNewSale: () => this.up({ screen: 'sales' }), onPrint: () => this.toast('Receipt sent to printer', 'print'), onShare: () => this.toast('Receipt QR shown on customer display', 'qr_code_2'), confetti,
+   onNewSale: () => this.up({ screen: 'sales', cartOpen: false }), onPrint: () => this.toast('Receipt sent to printer', 'print'), onShare: () => this.toast('Receipt QR shown on customer display', 'qr_code_2'), confetti,
    orderTabs, ordersDateLabel: S.ordersToday ? 'Today' : 'All time', toggleOrdersDate: () => this.setState({ ordersToday: !S.ordersToday, selOrderNo: null }), ordersList, ordersEmpty: filtered.length === 0, ordersEmptyMsg: 'No ' + S.ordersTab + ' orders ' + (S.ordersToday ? 'today' : 'yet'),
-   hasSel: !!so, noSel: !so,
+   hasSel: !!so, noSel: !so, mOrdAsideCls: (ordPicked && so) ? 'm-ord-open' : '', mCloseOrder: () => this.setState({ selOrderNo: null }),
    selNoStr: so ? this.noStr(so.no) : '', selStBg: soSt.bg, selStFg: soSt.fg, selStIcon: soSt.icon, selStLabel: soSt.label,
    selMeta: so ? dstr(so.ts) + ' · ' + tstr(so.ts) + ' · by ' + so.staff + (so.method ? ' · ' + so.method.toUpperCase() : '') : '',
    selItems: so ? so.items.map(x => ({ qb: 'x' + x.qty, name: x.name, unit: fmt(x.price), lineStr: fmt(x.price * x.qty) })) : [],
@@ -1178,7 +1460,7 @@ class Component extends DCLogic {
    chartTitle: range === 'today' ? 'Hourly Sales' : range === 'week' ? 'Daily Sales — last 7 days' : 'Daily Sales — last 30 days',
    chartLine: line || 'M0,96', chartArea: (line || 'M0,96') + ' L100,100 L0,100 Z', chartPoints: pts.length <= 12 ? pts.map(p => ({ x: p.x.toFixed(1), y: p.y.toFixed(1) })) : [],
    yLabels: [4, 3, 2, 1, 0].map(i => fmt(Math.round(maxV * i / 4))), xLabels: labels, topProducts,
-   goInventory: () => this.up({ screen: 'inventory', q: '' }),
+   goInventory: () => this.up({ screen: 'inventory', q: '', cartOpen: false }),
    settingsTabs, settingsTitle: S.settingsTab === 'store' ? 'Store Configuration' : S.settingsTab === 'staff' ? 'Staff' : S.settingsTab === 'receipt' ? 'Receipt' : S.settingsTab === 'printer' ? 'Printer' : 'Taxes',
    isStore: S.settingsTab === 'store', isStaff: S.settingsTab === 'staff', isReceipt: S.settingsTab === 'receipt', isPrinter: S.settingsTab === 'printer', isTaxes: S.settingsTab === 'taxes',
    setStoreName: S.settings.storeName, setCurrency: S.settings.currency, setReceiptHeader: S.settings.receiptHeader, setReceiptFooter: S.settings.receiptFooter, setPaper: S.settings.paper, setTaxRate: S.settings.taxRate,
